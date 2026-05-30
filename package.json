@@ -1,0 +1,59 @@
+{
+  "name": "@m-velikov/cpp-quick-start-mcp",
+  "version": "0.1.0",
+  "description": "An MCP server for scaffolding modern C++ projects and agentic configurations.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/m-velikov/cpp-quick-start-mcp.git"
+  },
+  "main": "build/index.js",
+  "bin": {
+    "cpp-quick-start-mcp": "build/index.js"
+  },
+  "files": [
+    "build",
+    "data"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build",
+    "start": "node build/index.js",
+    "format": "prettier --write \"src/**/*.ts\" \"data/**/*.md\"",
+    "lint": "eslint src/**/*.ts"
+  },
+  "keywords": [
+    "mcp",
+    "c++",
+    "scaffold",
+    "cmake",
+    "vcpkg",
+    "conan"
+  ],
+  "author": {
+    "name": "Momchil Velikov",
+    "email": "momchil.velikov@gmail.com",
+    "url": "https://github.com/m-velikov"
+  },
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=18.3.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@hono/node-server": "^2.0.4",
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "hono": "^4.12.23"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.14.0",
+    "@types/node": "^25.9.1",
+    "eslint": "^9.14.0",
+    "prettier": "^3.8.3",
+    "tsx": "^4.22.3",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.13.0"
+  }
+}

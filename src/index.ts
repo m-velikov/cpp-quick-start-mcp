@@ -1,0 +1,184 @@
+#!/usr/bin/env node
+import { serve } from "@hono/node-server";
+import { Hono } from "hono";
+import { Server } from "@modelcontextprotocol/sdk/server/index.js";
+import { WebStandardStreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js";
+import {
+  ListPromptsRequestSchema,
+  GetPromptRequestSchema,
+  ListResourcesRequestSchema,
+  ReadResourceRequestSchema,
+  ErrorCode,
+  McpError,
+} from "@modelcontextprotocol/sdk/types.js";
+import * as fs from "fs/promises";
+import * as path from "path";
+import { fileURLToPath } from "url";
+import crypto from "crypto";
+import { parseArgs } from "node:util";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const DATA_DIR = path.join(__dirname, "..", "data");
+
+const server = new Server(
+  {
+    name: "cpp-quick-start-mcp",
+    version: "1.0.0",
+  },
+  {
+    capabilities: {
+      prompts: {},
+      resources: {},
+    },
+  },
+);
+
+// Resources: serve all SKILL.md files inside data/ folders
+server.setRequestHandler(ListResourcesRequestSchema, async () => {
+  const dirs = await fs.readdir(DATA_DIR);
+  const resources = [];
+
+  for (const dir of dirs) {
+    if (dir === "meta-quickstart") continue; // Expose meta-quickstart as a Prompt, not a Resource
+
+    const skillPath = path.join(DATA_DIR, dir, "SKILL.md");
+    try {
+      await fs.access(skillPath);
+      resources.push({
+        uri: `mcp://scaffold/${dir}`,
+        name: `C++ Scaffolding Skill: ${dir}`,
+        mimeType: "text/markdown",
+        description: `Instructions for scaffolding ${dir}`,
+      });
+    } catch (e) {
+      // Ignore directories without SKILL.md
+    }
+  }
+
+  return { resources };
+});
+
+server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
+  const uri = request.params.uri;
+  const match = uri.match(/^mcp:\/\/scaffold\/(.+)$/);
+
+  if (!match) {
+    throw new McpError(ErrorCode.InvalidRequest, `Invalid URI: ${uri}`);
+  }
+
+  const skillName = path.basename(match[1] as string);
+  const skillPath = path.join(DATA_DIR, skillName, "SKILL.md");
+
+  try {
+    const content = await fs.readFile(skillPath, "utf-8");
+    return {
+      contents: [
+        {
+          uri,
+          mimeType: "text/markdown",
+          text: content,
+        },
+      ],
+    };
+  } catch (error) {
+    throw new McpError(ErrorCode.InvalidRequest, `Resource not found: ${uri}`);
+  }
+});
+
+// Prompts: expose the meta-quickstart interview
+server.setRequestHandler(ListPromptsRequestSchema, async () => {
+  return {
+    prompts: [
+      {
+        name: "meta-quickstart",
+        description:
+          "Conducts the C++ quick start interview to determine project stack.",
+        arguments: [],
+      },
+    ],
+  };
+});
+
+server.setRequestHandler(GetPromptRequestSchema, async (request) => {
+  if (request.params.name !== "meta-quickstart") {
+    throw new McpError(
+      ErrorCode.InvalidRequest,
+      `Prompt not found: ${request.params.name}`,
+    );
+  }
+
+  const metaSkillPath = path.join(DATA_DIR, "meta-quickstart", "SKILL.md");
+  try {
+    const content = await fs.readFile(metaSkillPath, "utf-8");
+    return {
+      description: "C++ Meta-Scaffold Interview Workflow",
+      messages: [
+        {
+          role: "user",
+          content: {
+            type: "text",
+            text: content,
+          },
+        },
+      ],
+    };
+  } catch (error) {
+    throw new McpError(
+      ErrorCode.InternalError,
+      "Failed to load meta-quickstart instructions",
+    );
+  }
+});
+
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+
+async function main() {
+  const { values } = parseArgs({
+    args: process.argv.slice(2),
+    options: {
+      port: { type: "string", short: "p" },
+      host: { type: "string", short: "h" },
+      stdio: { type: "boolean" },
+    },
+  });
+
+  const PORT = values.port
+    ? parseInt(values.port, 10)
+    : process.env.PORT
+      ? parseInt(process.env.PORT, 10)
+      : undefined;
+
+  // If --stdio is passed (or no port is specified), use stdio.
+  if (values.stdio || !PORT) {
+    console.error("Starting C++ Quick Start MCP Server on stdio...");
+    const transport = new StdioServerTransport();
+    await server.connect(transport);
+    return;
+  }
+
+  // Otherwise, use SSE/Hono
+  const transport = new WebStandardStreamableHTTPServerTransport({
+    sessionIdGenerator: () => crypto.randomUUID(),
+  });
+
+  await server.connect(transport);
+
+  const app = new Hono();
+
+  app.all("/mcp", async (c) => {
+    return transport.handleRequest(c.req.raw);
+  });
+
+  const HOST = values.host ?? process.env.HOST ?? "0.0.0.0";
+
+  console.log(
+    `Starting C++ Quick Start MCP Server on http://${HOST}:${PORT}/mcp ...`,
+  );
+  serve({
+    fetch: app.fetch,
+    port: PORT,
+    hostname: HOST,
+  });
+}
+
+main().catch(console.error);
