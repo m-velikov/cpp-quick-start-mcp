@@ -46,4 +46,4 @@ meson compile -C build
 
 ## Workflow Integration
 
-This skill is utilized by the `meta-quickstart` skill when the user selects Meson as their build system.
+This skill is utilized by the `go` prompt when the user selects Meson as their build system.

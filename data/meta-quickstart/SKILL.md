@@ -1,5 +1,5 @@
 ---
-name: meta-quickstart
+name: go
 description: Interviews the user about their preferred C++ stack and generates the specific project scaffolding skills.
 ---
 

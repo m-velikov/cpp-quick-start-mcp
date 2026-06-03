@@ -90,7 +90,7 @@ server.setRequestHandler(ListPromptsRequestSchema, async () => {
   return {
     prompts: [
       {
-        name: "meta-quickstart",
+        name: "go",
         description:
           "Conducts the C++ quick start interview to determine project stack.",
         arguments: [],
@@ -100,7 +100,7 @@ server.setRequestHandler(ListPromptsRequestSchema, async () => {
 });
 
 server.setRequestHandler(GetPromptRequestSchema, async (request) => {
-  if (request.params.name !== "meta-quickstart") {
+  if (request.params.name !== "go") {
     throw new McpError(
       ErrorCode.InvalidRequest,
       `Prompt not found: ${request.params.name}`,

@@ -47,4 +47,4 @@ cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=[path to vcpkg]/scripts/buildsystems/
 
 ## Workflow Integration
 
-This skill is utilized by the `meta-quickstart` skill when the user selects vcpkg for Project Packaging or Dependency Management.
+This skill is utilized by the `go` prompt when the user selects vcpkg for Project Packaging or Dependency Management.

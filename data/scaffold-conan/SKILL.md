@@ -43,4 +43,4 @@ cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=build/conan_toolchain.cmake -DCMAKE_B
 
 ## Workflow Integration
 
-This skill is utilized by the `meta-quickstart` skill when the user selects Conan for Project Packaging.
+This skill is utilized by the `go` prompt when the user selects Conan for Project Packaging.

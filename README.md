@@ -8,7 +8,7 @@ Instead of writing boilerplate from scratch (and hallucinating build system rule
 
 ## Features
 
-- **The `meta-quickstart` Prompt**: Initiates an interactive interview with the developer to determine the exact C++ stack (Standard, Build System, Package Manager, CI/CD, Coding Style, etc.).
+- **The `go` Prompt**: Initiates an interactive interview with the developer to determine the exact C++ stack (Standard, Build System, Package Manager, CI/CD, Coding Style, etc.).
 - **Dynamic Scaffolding Resources**: Provides the AI with deep, instructional markdown resources (`mcp://scaffold/conan`, `mcp://scaffold/github-actions`, etc.) so it knows exactly how to write the requested boilerplate files perfectly.
 - **Agent-Ready Architecture**: When you run the prompt, your C++ project will be automatically configured for modern agentic development. It seeds your project with built-in guidelines and architecture rules so future AI agents know exactly how to collaborate on your codebase safely and predictably.
 
@@ -60,9 +60,21 @@ This server supports **Dual Transport** (both `stdio` for local clients and `sse
 
 ### 1. Local Connection (stdio) - DEFAULT
 
-For local IDE clients, you can connect directly without running an HTTP server. Since you installed the package globally, you can use the `cpp-quick-start-mcp` command directly.
+For local IDE clients, you can connect directly without running an HTTP server.
 
-_(Note: On Windows, use `cpp-quick-start-mcp.cmd` as the command instead of `cpp-quick-start-mcp` in the JSON configurations below)._
+**Option A: Global Install (Recommended)**
+If you installed the package globally, use the `cpp-quick-start-mcp` command directly in the configurations below. _(Note: On Windows, use `cpp-quick-start-mcp.cmd` instead)._
+
+**Option B: NPX (No Install Required)**
+Alternatively, you can configure your IDE to run the MCP server directly via `npx` without installing it globally. Simply use `npx` as the command (or `npx.cmd` on Windows) and pass `-y @m-velikov/cpp-quick-start-mcp` as the arguments. For example:
+```json
+"mcpServers": {
+  "cpp-quick-start": {
+    "command": "npx",
+    "args": ["-y", "@m-velikov/cpp-quick-start-mcp"]
+  }
+}
+```
 
 #### Antigravity IDE
 
@@ -135,19 +147,21 @@ Example configuration for a custom web client:
 
 ### New Projects
 
-Once connected, simply open an empty folder in your editor/terminal and tell your AI assistant:
+Once connected, simply open an empty folder in your editor/terminal. To start the scaffolding interview, you can simply tell your AI assistant:
 
-> "Run the **meta-quickstart** prompt to help me start a new C++ project."
+> `/go help me start a new C++ project`
+
+_(Depending on your client, you may need to use the full prompt command: `/mcp:cpp-quick-start:go help me start a new C++ project`)_
 
 The AI will take over, interview you, and generate your custom C++ boilerplate.
 
 ### Existing Projects
 
-You can also use this MCP server to configure an existing project for agentic development. Open your existing project folder and tell your AI assistant:
+You can also use this MCP server to configure or modernize an existing project for agentic development. Open your existing project folder and tell your AI assistant:
 
-> "Use your scaffolding resources to configure this existing C++ project for agentic development (e.g., adding an AGENTS.md, setting up GitHub Actions, or integrating a package manager)."
+> `/go upgrade the project`
 
-The AI will read the exact blueprints from the MCP server and cleanly integrate them into your existing codebase.
+The AI will read the exact blueprints from the MCP server and cleanly integrate them into your existing codebase (e.g., adding an `AGENTS.md`, setting up GitHub Actions, or integrating a package manager).
 
 ## Community
 

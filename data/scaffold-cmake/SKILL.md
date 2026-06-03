@@ -19,7 +19,7 @@ The root `CMakeLists.txt` must be written using Modern CMake (target-based) prin
 1. **Minimum Required Version**: Start with `cmake_minimum_required(VERSION 3.20)` (or higher).
 2. **Project Definition**: `project(ProjectName VERSION 0.1.0 LANGUAGES CXX)`
 3. **C++ Standard**: Enforce the C++ standard strictly via target properties (e.g., `target_compile_features(<target> PUBLIC cxx_std_20)`). Avoid using global variables like `CMAKE_CXX_STANDARD`.
-4. **Targets and Modularity**: The agent MUST iterate over the libraries and tools requested by the user during the meta-quickstart interview.
+4. **Targets and Modularity**: The agent MUST iterate over the libraries and tools requested by the user during the go prompt interview.
    - **CRITICAL RULE**: Do NOT create a single monolithic top-level `CMakeLists.txt` that defines every target. Instead, you MUST split the build files per artifact. The root `CMakeLists.txt` should simply use `add_subdirectory(...)` for each target, and the actual `add_library(<target_name>)` or `add_executable(<target_name>)` commands MUST be placed inside individual `CMakeLists.txt` files residing in their respective target source directories.
    - Avoid global state functions like `include_directories()`.
 5. **Target Properties**: Apply properties to _each_ target specifically. Use `target_include_directories(<target_name> ...)`, `target_compile_features(<target_name> ...)`, and `target_link_libraries(<target_name> ...)`.
@@ -47,4 +47,4 @@ cmake --build build -j
 
 ## Workflow Integration
 
-This skill is utilized by the `meta-quickstart` skill when the user selects CMake as their build system.
+This skill is utilized by the `go` prompt when the user selects CMake as their build system.

@@ -27,4 +27,4 @@ The generated pipeline must:
 
 ## Workflow Integration
 
-This skill is utilized by the `meta-quickstart` skill when the user selects GitLab CI as their CI Provider.
+This skill is utilized by the `go` prompt when the user selects GitLab CI as their CI Provider.

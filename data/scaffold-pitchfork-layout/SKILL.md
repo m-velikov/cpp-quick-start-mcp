@@ -57,4 +57,4 @@ If no refactoring plan was approved, safely _add_ the new component directories 
 
 ## Workflow Integration
 
-This skill is utilized by the `meta-quickstart` skill when a user selects "Pitchfork" as their desired directory layout, or when an existing project is inferred to use Pitchfork conventions. The agent generating the final project should use the rules above to create the file tree.
+This skill is utilized by the `go` prompt when a user selects "Pitchfork" as their desired directory layout, or when an existing project is inferred to use Pitchfork conventions. The agent generating the final project should use the rules above to create the file tree.
