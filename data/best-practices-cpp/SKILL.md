@@ -34,5 +34,6 @@ When writing or modifying C++ code in this project, strictly adhere to the philo
 - Apply `noexcept` consistently for functions that are guaranteed not to throw exceptions (especially move constructors and destructors).
 - Use `[[nodiscard]]` on functions where ignoring the return value is likely a bug (e.g., error codes).
 - Avoid C-style raw arrays; use `std::array` or `std::vector`. When creating `std::array`s, prefer `std::to_array` to deduce the array length automatically instead of hardcoding it (e.g., `auto arr = std::to_array({1, 2, 3});`).
+- Always initialize variables before use. Check for and prevent potential memory leaks and dangling references.
 
 These guidelines ensure the code remains safe, performant, and maintainable across the entire project.

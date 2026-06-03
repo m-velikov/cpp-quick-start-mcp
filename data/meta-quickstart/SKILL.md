@@ -58,7 +58,7 @@ If the project already exists, **DO NOT** conduct the full Mode A interview.
 
 6. Proceed to **Step 2 (Implementation Plan)**.
 
-**If the user chooses Path 2 (Modernize & Augment):** 3. **Missing Tooling Interview**: Based on the auto-detected conventions, identify missing modern tooling (e.g., `.clang-format`, `.clang-tidy`, `.pre-commit-config.yaml`, testing frameworks, CI/CD). Ask the user which of these missing tools they would like to integrate. 4. **Build System Evaluation**: Evaluate the existing build system. Do NOT suggest migrating it to a completely different build system (e.g., do not migrate Makefiles to CMake). Instead, suggest improvements for the existing build system (e.g., modernizing legacy CMake to target-based CMake, or optimizing Makefiles). 5. **Target Platforms**: Ask the user about support for major target platforms (e.g., Desktop vs. Mobile, Windows vs Linux, Android vs macOS). Suggest migrating to the Pitchfork directory layout based on their answers if the current layout is insufficient. 6. Proceed to **Step 2 (Implementation Plan)**.
+**If the user chooses Path 2 (Modernize & Augment):** 3. **Missing Tooling Interview**: Based on the auto-detected conventions, identify missing modern tooling (e.g., code hygiene like `.clang-format` and pre-commit hooks, `.clang-tidy`, testing frameworks, CI/CD, base configs like `.gitignore`). Ask the user which of these missing tools they would like to integrate. 4. **Build System Evaluation**: Evaluate the existing build system. Do NOT suggest migrating it to a completely different build system (e.g., do not migrate Makefiles to CMake). Instead, suggest improvements for the existing build system (e.g., modernizing legacy CMake to target-based CMake, or optimizing Makefiles). **If CMake is used, suggest generating a `CMakePresets.json` to standardize build configurations.** 5. **Target Platforms**: Ask the user about support for major target platforms (e.g., Desktop vs. Mobile, Windows vs Linux, Android vs macOS). Suggest migrating to the Pitchfork directory layout based on their answers if the current layout is insufficient. 6. Proceed to **Step 2 (Implementation Plan)**.
 
 ---
 
@@ -66,13 +66,17 @@ If the project already exists, **DO NOT** conduct the full Mode A interview.
 
 Based on the chosen Mode and the user's answers, create a formal implementation plan.
 
+**CRITICAL TOOLING RULE**: For every tool, build system, CI provider, code quality checker, or package manager selected by the user (or universally required, like `base-configs`), you MUST actively attempt to fetch its corresponding `mcp://scaffold/<name>` resource using the `read_resource` tool before writing files. If a specific resource exists, you must follow it strictly. However, if no specific resource exists for a chosen tool, you should still proceed and do your best to configure it correctly using your general knowledge.
+
 **If you are in Mode A (New Project):**
 Your plan must outline the exact file templates and commands needed to bootstrap the cross-platform C++ project using the chosen stack.
 
 - Prefer splitting build system files per artifact (e.g., using `add_subdirectory` or `subdir()`) instead of creating a single top-level monolithic build file.
 - Explicitly plan to run `git init` in the project directory if a Git repository is not already initialized, and to create or rename the initial branch to `main` (e.g. `git branch -M main`).
-- Plan to generate a fresh `README.md` specifically describing the user's new C++ project. This `README.md` MUST include a `## Configure and Build` section containing the exact CLI commands required to configure and build the project based on the user's chosen stack (e.g., `cmake -B build -S .` or `conan install . --build=missing`).
+- Plan to generate a fresh `README.md` specifically describing the user's new C++ project. This `README.md` MUST include a `## Configure and Build` section containing the exact CLI commands required to configure and build the project based on the user's chosen stack (e.g., `cmake --preset dev` or `conan install . --build=missing`).
+- Plan to read the `scaffold-base-configs` skill and generate the `.gitignore`, `.gitattributes`, and `.clangd` files.
 - Plan to read the `scaffold-agents` skill from the MCP knowledge base and use it to generate an `AGENTS.md` file in the user's project root.
+- **CRITICAL**: If CMake is the build system, you MUST read the `scaffold-cmake-presets` skill and plan to generate a `CMakePresets.json` file.
 
 **If you are in Mode B (Existing Project - Add Components):**
 Your plan must detail how you will create the new target folders adhering strictly to the inferred layout conventions, and how you will safely _append_ the new targets to the existing build files (do NOT overwrite existing files).
@@ -81,19 +85,24 @@ If a layout refactoring was agreed upon, include that in the plan before adding 
 **If you are in Mode B (Existing Project - Modernize):**
 Your plan must include:
 
+- Reading the `scaffold-base-configs` skill to ensure `.gitignore`, `.gitattributes`, and `.clangd` are present and correct.
 - Generating an `AGENTS.md` file using the `scaffold-agents` skill.
 - Safely introducing the requested code quality tools (e.g., `.clang-format`, `.clang-tidy`).
 - Applying the agreed-upon build system improvements directly to the existing build files.
 - Implementing any layout refactoring if agreed upon.
+- **CRITICAL**: If CMake is the build system and the user agreed to CMake improvements, you MUST read the `scaffold-cmake-presets` skill and plan to generate a `CMakePresets.json` file.
 
 **Workspace Skills Generation (All Modes)**:
 In ALL plans, you must include the creation of customized permanent workspace SKILL files. These must be written directly into the project's workspace using an agent-agnostic directory like `.agents/skills/` or `skills/` so that any AI working in the project immediately knows how to operate it. **CRITICAL**: Do NOT use agent-specific directories like `.gemini` or `.claude`.
+
+**Skill Modification Guidelines**: When upgrading or modifying existing skills, avoid big rewrites of an existing skill file. Do the minimal changes which add the new information and remove the obsolete information.
+
 The workspace skills to create are:
 
 1. `skills/configure-project/SKILL.md`: Exact instructions and CLI commands for fetching dependencies, installing them, and configuring the project (e.g., `conan install` or `vcpkg install` followed by `cmake -B build`).
 2. `skills/build-project/SKILL.md`: Exact instructions and CLI commands for building the project (e.g., `cmake --build build -j`).
 3. **Component Best Practices**: For each of the components and tools used in the project (e.g., CMake, vcpkg, GTest), create a dedicated skill containing best practices and usage instructions tailored to this specific project.
-4. **Refactoring Best Practices**: Create a skill (e.g., `skills/best-practices-refactoring/SKILL.md`) detailing how to safely refactor code within the project's layout and test constraints.
+4. **Refactoring Best Practices**: Create a skill (e.g., `skills/best-practices-refactoring/SKILL.md`) detailing how to safely refactor code within the project's layout and test constraints. **Include the rule**: When creating or renaming a C++ namespace, review the names of the files and directories where members of the namespace are declared/defined; strive for consistency.
 5. **Code Review Best Practices**: Create a skill (e.g., `skills/best-practices-code-review/SKILL.md`) containing guidelines for reviewing code to ensure compliance with the project's chosen formatting, style, and CI requirements.
 6. **C++ Core Guidelines Best Practices**: Create a skill (e.g., `skills/best-practices-cpp/SKILL.md`) establishing fundamental C++ guidelines based on the [C++ Core Guidelines](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md).
 

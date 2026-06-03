@@ -32,12 +32,17 @@ This repository is designed to be operated by a multi-agent system. When working
    - **Role**: Core implementation and logic design.
    - **Responsibilities**: Writes the actual C++ headers and source files. Enforces the configured coding style and ensures code compiles flawlessly with the configured C++ standard.
 
-3. **QA / Tester Agent**:
+3. **Design / Code Review Agent**:
+
+   - **Role**: Architectural oversight and code quality enforcement.
+   - **Responsibilities**: Reviews the implementation plans and C++ code against the `best-practices-*` skills. Enforces Clean Code principles, architectural layering, and security rules before code is finalized.
+
+4. **QA / Tester Agent**:
 
    - **Role**: Quality assurance and test coverage.
    - **Responsibilities**: Writes test cases using the configured testing framework. Continuously runs the configured test command to verify correctness and reports back to the Lead Agent.
 
-4. **Build System Agent**:
+5. **Build System Agent**:
    - **Role**: Managing build configurations and cross-platform support.
    - **Responsibilities**: Updates the project's build system files, manages dependencies according to the configured package manager, and ensures cross-platform settings (like export macros) are correctly maintained.
 

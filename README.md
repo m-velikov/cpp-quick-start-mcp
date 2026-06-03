@@ -67,6 +67,7 @@ If you installed the package globally, use the `cpp-quick-start-mcp` command dir
 
 **Option B: NPX (No Install Required)**
 Alternatively, you can configure your IDE to run the MCP server directly via `npx` without installing it globally. Simply use `npx` as the command (or `npx.cmd` on Windows) and pass `-y @m-velikov/cpp-quick-start-mcp` as the arguments. For example:
+
 ```json
 "mcpServers": {
   "cpp-quick-start": {

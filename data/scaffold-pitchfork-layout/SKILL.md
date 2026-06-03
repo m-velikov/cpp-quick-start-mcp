@@ -21,6 +21,7 @@ When invoking this skill to scaffold a new C++ project, the agent MUST create th
    - **For multiple targets** (e.g., a core library and multiple CLI tools), the agent MUST group them properly. Either use target-specific subdirectories inside `src/` (e.g., `src/core_lib/`, `src/app_cli/`) or use the top-level `libs/` and `tools/` directories as per Pitchfork (e.g., `libs/core_lib/src/`, `tools/app_cli/src/`).
 2. **`include/`**: Contains the public headers API.
    - **CRITICAL**: Do NOT place headers directly in `include/`. You must create a subdirectory matching the target name (e.g., `include/<target_name>/`). This prevents header collisions. For multiple libraries, create multiple subdirectories (e.g., `include/libA/`, `include/libB/`).
+   - **Avoid Redundancy**: Check for redundancies in file naming. For example, there is not much point in having `include/foo/foo-bar.hpp` when it could simply be `include/foo/bar.hpp`.
 3. **`tests/`**: Contains all testing code. For multiple targets, group tests by target (e.g., `tests/libA/`, `tests/libB/`).
 4. **`examples/`** _(Optional)_: Contains example code showing how to use the library/project.
 5. **`external/`** _(Optional)_: Contains third-party dependencies (if not using a package manager like vcpkg or FetchContent).

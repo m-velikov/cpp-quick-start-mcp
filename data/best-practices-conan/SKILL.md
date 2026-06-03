@@ -26,3 +26,7 @@ Follow these best practices when managing C++ dependencies via Conan:
 ## 4. Reproducible Builds
 
 - Generate and commit a `conan.lock` lockfile for stable and reproducible builds across developer machines and CI.
+
+## 5. Virtual Environments
+
+- If you encounter issues finding compilers or build tools while using Conan, consider sourcing or executing the Conan-generated environment setup scripts (e.g., `conanbuild.bat` / `conanbuild.sh` or `conanrun.bat` / `conanrun.sh`). These scripts properly configure the `PATH` and environment variables for the build tools.

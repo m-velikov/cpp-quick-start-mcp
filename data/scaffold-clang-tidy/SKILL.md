@@ -35,3 +35,18 @@ When the user specifies Clang-Tidy for Code Quality, the agent MUST generate a `
    ```cmake
    set(CMAKE_CXX_CLANG_TIDY "clang-tidy")
    ```
+
+## Upgrading Existing Projects (Mode B)
+
+When upgrading or modernizing an existing project that already has a `.clang-tidy` file:
+
+1. **Preserve User Overrides**: You MUST read the existing `.clang-tidy` file before making any changes.
+2. **Do Not Clobber**: Any specific checks explicitly disabled or added by the user (e.g., `-readability-magic-numbers`) MUST be preserved in the updated `.clang-tidy` configuration.
+
+## Workspace Skill Generation
+
+As part of the workspace skills generation, append the following to the `skills/best-practices-code-review/SKILL.md` (or similar code quality skill):
+
+- Provide the official list of checks for reference: `https://clang.llvm.org/extra/clang-tidy/checks/list.html`
+- Explain to the user that they can easily disable annoying checks by adding `-check-name` to the `Checks` string in their `.clang-tidy` file.
+- Remind future agents that when modifying this workspace skill or the `.clang-tidy` file, they must respect the **Skill Modification Guidelines** and strictly preserve the user's custom overrides.
