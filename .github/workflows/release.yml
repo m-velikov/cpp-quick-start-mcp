@@ -1,0 +1,76 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry Run (build and simulate publish without making actual changes)'
+        required: true
+        type: boolean
+        default: false
+      publish_npm:
+        description: 'Publish to NPM Registry'
+        required: true
+        type: boolean
+        default: true
+      publish_github:
+        description: 'Create GitHub Release (with source and binary tarball)'
+        required: true
+        type: boolean
+        default: true
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org/'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Get version from package.json
+        id: get_version
+        run: echo "VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_ENV
+
+      - name: Publish to NPM (Dry Run)
+        if: ${{ inputs.dry_run && inputs.publish_npm }}
+        run: npm publish --dry-run
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish to NPM
+        if: ${{ !inputs.dry_run && inputs.publish_npm }}
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Pack package for GitHub Release
+        if: ${{ inputs.publish_github }}
+        run: npm pack
+        
+      - name: Create GitHub Release (Dry Run)
+        if: ${{ inputs.dry_run && inputs.publish_github }}
+        run: |
+          echo "Dry run: Would have created a GitHub Release for v${{ env.VERSION }} with attached binary tarball"
+
+      - name: Create GitHub Release
+        if: ${{ !inputs.dry_run && inputs.publish_github }}
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ env.VERSION }}
+          name: Release v${{ env.VERSION }}
+          generate_release_notes: true
+          files: |
+            m-velikov-cpp-quick-start-mcp-${{ env.VERSION }}.tgz
