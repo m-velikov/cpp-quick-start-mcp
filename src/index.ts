@@ -94,7 +94,8 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
     tools: [
       {
         name: "list_resources",
-        description: "List all available C++ scaffolding skills/resources that can be fetched via read_resource.",
+        description:
+          "List all available C++ scaffolding skills/resources that can be fetched via read_resource.",
         inputSchema: {
           type: "object",
           properties: {},
@@ -103,13 +104,15 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
       },
       {
         name: "read_resource",
-        description: "Read a specific C++ scaffolding skill/resource by its URI.",
+        description:
+          "Read a specific C++ scaffolding skill/resource by its URI.",
         inputSchema: {
           type: "object",
           properties: {
             uri: {
               type: "string",
-              description: "The URI of the resource to fetch (e.g., mcp://scaffold/best-practices-cpp).",
+              description:
+                "The URI of the resource to fetch (e.g., mcp://scaffold/best-practices-cpp).",
             },
           },
           required: ["uri"],
@@ -137,7 +140,9 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       content: [
         {
           type: "text",
-          text: `Available resources:\n${resources.map(r => `- ${r}`).join("\\n")}`,
+          text: `Available resources:\n${resources
+            .map((r) => `- ${r}`)
+            .join("\\n")}`,
         },
       ],
     };
@@ -146,7 +151,10 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
   if (request.params.name === "read_resource") {
     const uri = request.params.arguments?.uri;
     if (typeof uri !== "string") {
-      throw new McpError(ErrorCode.InvalidParams, "Invalid or missing 'uri' argument");
+      throw new McpError(
+        ErrorCode.InvalidParams,
+        "Invalid or missing 'uri' argument",
+      );
     }
 
     const match = uri.match(/^mcp:\/\/scaffold\/(.+)$/);
@@ -168,11 +176,17 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         ],
       };
     } catch (error) {
-      throw new McpError(ErrorCode.InvalidRequest, `Resource not found: ${uri}`);
+      throw new McpError(
+        ErrorCode.InvalidRequest,
+        `Resource not found: ${uri}`,
+      );
     }
   }
 
-  throw new McpError(ErrorCode.MethodNotFound, `Tool not found: ${request.params.name}`);
+  throw new McpError(
+    ErrorCode.MethodNotFound,
+    `Tool not found: ${request.params.name}`,
+  );
 });
 
 // Prompts: expose the meta-quickstart interview

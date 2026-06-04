@@ -53,6 +53,7 @@ If the project already exists, **DO NOT** conduct the full Mode A interview.
 2. **Path Selection**: Ask the user: _"I see this is an existing project. Would you like to **1. Add new components** (libraries/executables), or **2. Modernize the codebase and augment it for agentic development**?"_
 
 **If the user chooses Path 1 (Add Components):**
+
 3. **Component Interview**: Ask the user what new components to add, prompting repeatedly until they say "no more targets for now".
 4. **Target Platforms**: Ask about support for major target platforms (e.g., Desktop vs. Mobile, Windows vs Linux, Android vs macOS).
 5. **Layout Conformity Check**: Evaluate if adding these new components causes the project to violate its inferred directory layout conventions.
@@ -60,6 +61,7 @@ If the project already exists, **DO NOT** conduct the full Mode A interview.
 6. Proceed to **Step 2 (Implementation Plan)**.
 
 **If the user chooses Path 2 (Modernize & Augment):**
+
 3. **Missing Tooling Interview**: Based on the auto-detected conventions, identify missing modern tooling (e.g., code hygiene like `.clang-format` and pre-commit hooks, `.clang-tidy`, testing frameworks, CI/CD, base configs like `.gitignore`). Ask the user which of these missing tools they would like to integrate.
 4. **Build System Evaluation**: Evaluate the existing build system. Do NOT suggest migrating it to a completely different build system (e.g., do not migrate Makefiles to CMake). Instead, suggest improvements for the existing build system (e.g., modernizing legacy CMake to target-based CMake, or optimizing Makefiles). **If CMake is used, suggest generating a `CMakePresets.json` to standardize build configurations.**
 5. **Layout Refactoring**: You MUST explicitly ask the user if they would like to migrate to the standard Pitchfork directory layout, explaining its benefits for modern C++ projects, unless they are already strictly following it.
@@ -73,6 +75,7 @@ If the project already exists, **DO NOT** conduct the full Mode A interview.
 Based on the chosen Mode and the user's answers, create a formal implementation plan.
 
 **CRITICAL TOOLING RULE**: For every tool, build system, CI provider, code quality checker, or package manager selected by the user (or universally required, like `base-configs`), you MUST actively attempt to fetch its corresponding `mcp://scaffold/<name>` resource.
+
 - **Resource Discovery**: First, invoke the `list_resources` tool (if available) to discover the exact URIs of all available `mcp://scaffold/*` resources. Do not guess the URIs blindly.
 - **Resource Fetching**: Then, use the `read_resource` tool to fetch the content of the relevant URIs before writing files. If a specific resource exists for a chosen tool, you must follow it strictly. If no specific resource exists, you should still proceed and configure it correctly using your general knowledge.
 

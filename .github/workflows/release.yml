@@ -59,7 +59,7 @@ jobs:
       - name: Pack package for GitHub Release
         if: ${{ inputs.publish_github }}
         run: npm pack
-        
+
       - name: Create GitHub Release (Dry Run)
         if: ${{ inputs.dry_run && inputs.publish_github }}
         run: |
