@@ -1,6 +1,6 @@
 {
   "name": "@m-velikov/cpp-quick-start-mcp",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "An MCP server for scaffolding modern C++ projects and agentic configurations.",
   "repository": {
     "type": "git",
