@@ -4,7 +4,7 @@
   "description": "An MCP server for scaffolding modern C++ projects and agentic configurations.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/m-velikov/cpp-quick-start-mcp.git"
+    "url": "git+https://github.com/m-velikov/cpp-quick-start-mcp.git"
   },
   "main": "build/index.js",
   "bin": {
