@@ -169,7 +169,7 @@ async function main() {
     return transport.handleRequest(c.req.raw);
   });
 
-  const HOST = values.host ?? process.env.HOST ?? "0.0.0.0";
+  const HOST = values.host ?? process.env.HOST ?? "127.0.0.1";
 
   console.log(
     `Starting C++ Quick Start MCP Server on http://${HOST}:${PORT}/mcp ...`,
