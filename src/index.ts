@@ -8,6 +8,8 @@ import {
   GetPromptRequestSchema,
   ListResourcesRequestSchema,
   ReadResourceRequestSchema,
+  ListToolsRequestSchema,
+  CallToolRequestSchema,
   ErrorCode,
   McpError,
 } from "@modelcontextprotocol/sdk/types.js";
@@ -29,6 +31,7 @@ const server = new Server(
     capabilities: {
       prompts: {},
       resources: {},
+      tools: {},
     },
   },
 );
@@ -83,6 +86,93 @@ server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
   } catch (error) {
     throw new McpError(ErrorCode.InvalidRequest, `Resource not found: ${uri}`);
   }
+});
+
+// Tools: explicitly expose list_resources and read_resource
+server.setRequestHandler(ListToolsRequestSchema, async () => {
+  return {
+    tools: [
+      {
+        name: "list_resources",
+        description: "List all available C++ scaffolding skills/resources that can be fetched via read_resource.",
+        inputSchema: {
+          type: "object",
+          properties: {},
+          required: [],
+        },
+      },
+      {
+        name: "read_resource",
+        description: "Read a specific C++ scaffolding skill/resource by its URI.",
+        inputSchema: {
+          type: "object",
+          properties: {
+            uri: {
+              type: "string",
+              description: "The URI of the resource to fetch (e.g., mcp://scaffold/best-practices-cpp).",
+            },
+          },
+          required: ["uri"],
+        },
+      },
+    ],
+  };
+});
+
+server.setRequestHandler(CallToolRequestSchema, async (request) => {
+  if (request.params.name === "list_resources") {
+    const dirs = await fs.readdir(DATA_DIR);
+    const resources = [];
+    for (const dir of dirs) {
+      if (dir === "meta-quickstart") continue;
+      const skillPath = path.join(DATA_DIR, dir, "SKILL.md");
+      try {
+        await fs.access(skillPath);
+        resources.push(`mcp://scaffold/${dir}`);
+      } catch (e) {
+        // ignore
+      }
+    }
+    return {
+      content: [
+        {
+          type: "text",
+          text: `Available resources:\n${resources.map(r => `- ${r}`).join("\\n")}`,
+        },
+      ],
+    };
+  }
+
+  if (request.params.name === "read_resource") {
+    const uri = request.params.arguments?.uri;
+    if (typeof uri !== "string") {
+      throw new McpError(ErrorCode.InvalidParams, "Invalid or missing 'uri' argument");
+    }
+
+    const match = uri.match(/^mcp:\/\/scaffold\/(.+)$/);
+    if (!match) {
+      throw new McpError(ErrorCode.InvalidRequest, `Invalid URI: ${uri}`);
+    }
+
+    const skillName = path.basename(match[1] as string);
+    const skillPath = path.join(DATA_DIR, skillName, "SKILL.md");
+
+    try {
+      const content = await fs.readFile(skillPath, "utf-8");
+      return {
+        content: [
+          {
+            type: "text",
+            text: content,
+          },
+        ],
+      };
+    } catch (error) {
+      throw new McpError(ErrorCode.InvalidRequest, `Resource not found: ${uri}`);
+    }
+  }
+
+  throw new McpError(ErrorCode.MethodNotFound, `Tool not found: ${request.params.name}`);
 });
 
 // Prompts: expose the meta-quickstart interview

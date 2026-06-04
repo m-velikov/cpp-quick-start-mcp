@@ -52,13 +52,19 @@ If the project already exists, **DO NOT** conduct the full Mode A interview.
 1. **Convention Scanning**: You MUST read the existing build files (e.g., `CMakeLists.txt`, `Makefile`) and a few source files to automatically infer the build system, package manager, directory layout, naming conventions, and code formatting style. Auto-detect whatever is possible.
 2. **Path Selection**: Ask the user: _"I see this is an existing project. Would you like to **1. Add new components** (libraries/executables), or **2. Modernize the codebase and augment it for agentic development**?"_
 
-**If the user chooses Path 1 (Add Components):** 3. **Component Interview**: Ask the user what new components to add, prompting repeatedly until they say "no more targets for now". 4. **Target Platforms**: Ask about support for major target platforms (e.g., Desktop vs. Mobile, Windows vs Linux, Android vs macOS). 5. **Layout Conformity Check**: Evaluate if adding these new components causes the project to violate its inferred directory layout conventions.
-
-- If it violates conventions or if the target platforms suggest a more robust layout, suggest a layout refactoring (e.g., migrating to Pitchfork layout).
-
+**If the user chooses Path 1 (Add Components):**
+3. **Component Interview**: Ask the user what new components to add, prompting repeatedly until they say "no more targets for now".
+4. **Target Platforms**: Ask about support for major target platforms (e.g., Desktop vs. Mobile, Windows vs Linux, Android vs macOS).
+5. **Layout Conformity Check**: Evaluate if adding these new components causes the project to violate its inferred directory layout conventions.
+   - If it violates conventions or if the target platforms suggest a more robust layout, you MUST explicitly suggest a layout refactoring (e.g., migrating to Pitchfork layout).
 6. Proceed to **Step 2 (Implementation Plan)**.
 
-**If the user chooses Path 2 (Modernize & Augment):** 3. **Missing Tooling Interview**: Based on the auto-detected conventions, identify missing modern tooling (e.g., code hygiene like `.clang-format` and pre-commit hooks, `.clang-tidy`, testing frameworks, CI/CD, base configs like `.gitignore`). Ask the user which of these missing tools they would like to integrate. 4. **Build System Evaluation**: Evaluate the existing build system. Do NOT suggest migrating it to a completely different build system (e.g., do not migrate Makefiles to CMake). Instead, suggest improvements for the existing build system (e.g., modernizing legacy CMake to target-based CMake, or optimizing Makefiles). **If CMake is used, suggest generating a `CMakePresets.json` to standardize build configurations.** 5. **Target Platforms**: Ask the user about support for major target platforms (e.g., Desktop vs. Mobile, Windows vs Linux, Android vs macOS). Suggest migrating to the Pitchfork directory layout based on their answers if the current layout is insufficient. 6. Proceed to **Step 2 (Implementation Plan)**.
+**If the user chooses Path 2 (Modernize & Augment):**
+3. **Missing Tooling Interview**: Based on the auto-detected conventions, identify missing modern tooling (e.g., code hygiene like `.clang-format` and pre-commit hooks, `.clang-tidy`, testing frameworks, CI/CD, base configs like `.gitignore`). Ask the user which of these missing tools they would like to integrate.
+4. **Build System Evaluation**: Evaluate the existing build system. Do NOT suggest migrating it to a completely different build system (e.g., do not migrate Makefiles to CMake). Instead, suggest improvements for the existing build system (e.g., modernizing legacy CMake to target-based CMake, or optimizing Makefiles). **If CMake is used, suggest generating a `CMakePresets.json` to standardize build configurations.**
+5. **Layout Refactoring**: You MUST explicitly ask the user if they would like to migrate to the standard Pitchfork directory layout, explaining its benefits for modern C++ projects, unless they are already strictly following it.
+6. **Target Platforms**: Ask the user about support for major target platforms (e.g., Desktop vs. Mobile, Windows vs Linux, Android vs macOS).
+7. Proceed to **Step 2 (Implementation Plan)**.
 
 ---
 
@@ -66,7 +72,9 @@ If the project already exists, **DO NOT** conduct the full Mode A interview.
 
 Based on the chosen Mode and the user's answers, create a formal implementation plan.
 
-**CRITICAL TOOLING RULE**: For every tool, build system, CI provider, code quality checker, or package manager selected by the user (or universally required, like `base-configs`), you MUST actively attempt to fetch its corresponding `mcp://scaffold/<name>` resource using the `read_resource` tool before writing files. If a specific resource exists, you must follow it strictly. However, if no specific resource exists for a chosen tool, you should still proceed and do your best to configure it correctly using your general knowledge.
+**CRITICAL TOOLING RULE**: For every tool, build system, CI provider, code quality checker, or package manager selected by the user (or universally required, like `base-configs`), you MUST actively attempt to fetch its corresponding `mcp://scaffold/<name>` resource.
+- **Resource Discovery**: First, invoke the `list_resources` tool (if available) to discover the exact URIs of all available `mcp://scaffold/*` resources. Do not guess the URIs blindly.
+- **Resource Fetching**: Then, use the `read_resource` tool to fetch the content of the relevant URIs before writing files. If a specific resource exists for a chosen tool, you must follow it strictly. If no specific resource exists, you should still proceed and configure it correctly using your general knowledge.
 
 **If you are in Mode A (New Project):**
 Your plan must outline the exact file templates and commands needed to bootstrap the cross-platform C++ project using the chosen stack.
@@ -101,10 +109,10 @@ The workspace skills to create are:
 
 1. `skills/configure-project/SKILL.md`: Exact instructions and CLI commands for fetching dependencies, installing them, and configuring the project (e.g., `conan install` or `vcpkg install` followed by `cmake -B build`).
 2. `skills/build-project/SKILL.md`: Exact instructions and CLI commands for building the project (e.g., `cmake --build build -j`).
-3. **Component Best Practices**: For each of the components and tools used in the project (e.g., CMake, vcpkg, GTest), create a dedicated skill containing best practices and usage instructions tailored to this specific project.
-4. **Refactoring Best Practices**: Create a skill (e.g., `skills/best-practices-refactoring/SKILL.md`) detailing how to safely refactor code within the project's layout and test constraints. **Include the rule**: When creating or renaming a C++ namespace, review the names of the files and directories where members of the namespace are declared/defined; strive for consistency.
-5. **Code Review Best Practices**: Create a skill (e.g., `skills/best-practices-code-review/SKILL.md`) containing guidelines for reviewing code to ensure compliance with the project's chosen formatting, style, and CI requirements.
-6. **C++ Core Guidelines Best Practices**: Create a skill (e.g., `skills/best-practices-cpp/SKILL.md`) establishing fundamental C++ guidelines based on the [C++ Core Guidelines](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md).
+3. **Component Best Practices**: For each of the components and tools used in the project (e.g., CMake, vcpkg, GTest), create a dedicated skill containing best practices and usage instructions tailored to this specific project. **CRITICAL**: You MUST use the `read_resource` tool to fetch the corresponding `mcp://scaffold/best-practices-<name>` resource and include its contents IN FULL (do not summarize or truncate).
+4. **Refactoring Best Practices**: Create a skill (e.g., `skills/best-practices-refactoring/SKILL.md`) detailing how to safely refactor code within the project's layout and test constraints. **CRITICAL**: You MUST fetch the `mcp://scaffold/best-practices-refactoring` resource and include its contents IN FULL. **Also include the rule**: When creating or renaming a C++ namespace, review the names of the files and directories where members of the namespace are declared/defined; strive for consistency.
+5. **Code Review Best Practices**: Create a skill (e.g., `skills/best-practices-code-review/SKILL.md`) containing guidelines for reviewing code to ensure compliance with the project's chosen formatting, style, and CI requirements. **CRITICAL**: You MUST fetch the `mcp://scaffold/best-practices-code-review` resource and include its contents IN FULL.
+6. **C++ Core Guidelines Best Practices**: Create a skill (e.g., `skills/best-practices-cpp/SKILL.md`) establishing fundamental C++ guidelines based on the [C++ Core Guidelines](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md). **CRITICAL**: You MUST fetch the `mcp://scaffold/best-practices-cpp` resource and include its contents IN FULL.
 
 Wait for the user's explicit approval on the implementation plan before proceeding to Execution.
 
