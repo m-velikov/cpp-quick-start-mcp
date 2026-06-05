@@ -168,4 +168,4 @@ The AI will read the exact blueprints from the MCP server and cleanly integrate 
 
 Got questions, ideas, or need help setting up your C++ environment? Come hang out with us on Discord!
 
-[Join the Discord Server](https://discord.gg/YOUR_INVITE_LINK)
+[Join the Discord Server](https://discord.gg/qrhuftYXs4)
