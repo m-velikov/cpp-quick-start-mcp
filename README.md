@@ -146,19 +146,29 @@ Example configuration for a custom web client:
 
 ## Usage
 
+Once you have added the MCP server to your AI client, the agent automatically discovers its capabilities. The server registers a specific prompt (named `go`) and various instructional resources with the client. When you ask the agent to create or upgrade a C++ project, the agent will scan its available MCP tools and prompts, recognize the `cpp-quick-start` server as the right tool for C++ scaffolding, and invoke it.
+
 ### New Projects
 
-Once connected, simply open an empty folder in your editor/terminal. To start the scaffolding interview, you can simply tell your AI assistant:
+Open an empty folder in your editor/terminal and simply ask your AI assistant naturally:
+
+> "Help me start a new C++ project"
+
+Or, if your client supports explicit prompt commands, you can trigger the interview directly:
 
 > `/go help me start a new C++ project`
 
-_(Depending on your client, you may need to use the full prompt command: `/mcp:cpp-quick-start:go help me start a new C++ project`)_
+_(Depending on your client, this might be `/mcp:cpp-quick-start:go`)_
 
-The AI will take over, interview you, and generate your custom C++ boilerplate.
+The AI will take over, interview you about your stack preferences, and generate your custom C++ boilerplate.
 
 ### Existing Projects
 
 You can also use this MCP server to configure or modernize an existing project for agentic development. Open your existing project folder and tell your AI assistant:
+
+> "I want to upgrade this existing C++ project to use modern AI agent best practices."
+
+Or, using the explicit prompt:
 
 > `/go upgrade the project`
 
