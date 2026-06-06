@@ -45,7 +45,7 @@ Create a file named `.gitattributes` with the following exact content:
 
 ```gitattributes
 # Auto detect text files and perform LF normalization
-* text=auto
+* text=auto eol=lf
 
 # Ensure bash scripts always use LF
 *.sh text eol=lf
