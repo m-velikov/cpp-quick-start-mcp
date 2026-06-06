@@ -15,15 +15,37 @@ When the user specifies Clang-Tidy for Code Quality, the agent MUST generate a `
 
 1. **Configuration File**: Create a `.clang-tidy` file with a robust set of default checks.
 
-   - **CRITICAL**: For `Checks`, ensure you disable `bugprone-easily-swappable-parameters` (e.g., add `-bugprone-easily-swappable-parameters`).
-   - **CRITICAL**: If the chosen coding convention does not require braces around single statement if/for/while/etc bodies, you MUST also disable `readability-braces-around-statements` (e.g., add `-readability-braces-around-statements`).
+   - **CRITICAL**: You MUST configure `CheckOptions` for `readability-identifier-naming.*` to match the user's preferred naming conventions. If the user's conventions are not provided or known, ask them before proceeding.
+   - **CRITICAL**: You MUST respect the user's formatting style (e.g., from `.clang-format`). If their coding convention does NOT require braces around single statements, you MUST append `-readability-braces-around-statements` to the `Checks` string to disable the warning.
 
    ```yaml
-   Checks: "-*,readability-*,modernize-*,performance-*,bugprone-*,cppcoreguidelines-*,-bugprone-easily-swappable-parameters"
-   WarningsAsErrors: ""
+   ---
+   # Disable everything first, then opt-in
+   Checks: >
+     -*,
+     bugprone-*,
+     clang-analyzer-*,
+     performance-*,
+     modernize-*,
+     -modernize-use-trailing-return-type,
+     readability-*,
+     -readability-magic-numbers,
+     -readability-braces-around-statements,
+     -readability-identifier-length,
+     -readability-uppercase-literal-suffix,
+     -readability-math-missing-parentheses,
+     -readability-named-parameter,
+     -readability-isolate-declaration,
+     -readability-function-cognitive-complexity,
+     misc-*,
+     -misc-const-correctness,
+     -misc-non-private-member-variables-in-classes
+
+   # Automatically apply suggested fixes where safe
    HeaderFilterRegex: ".*"
-   AnalyzeTemporaryDtors: false
-   FormatStyle: "file"
+   FormatStyle: file
+
+   # Naming convention settings (adjust values to match user preference)
    CheckOptions:
      - key: readability-identifier-naming.ClassCase
        value: CamelCase
