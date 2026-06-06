@@ -31,7 +31,7 @@ Ask the user to select their preferences for the following categories.
    - **CRITICAL**: Do NOT ask contradicting questions. Adapt your questions dynamically based on previous answers. For example, if the user chooses Conan for Dependency Management, do NOT ask them about vcpkg for Project Packaging in the next question unless they explicitly request both.
 4. **Project Packaging**: (e.g., Conan conanfile.py, vcpkg manifest, None)
 5. **Testing Framework**: (e.g., GTest, Catch2, doctest, Boost.Test)
-6. **Code Quality**: (e.g., clang-tidy, pre-commit hooks, custom build targets)
+6. **Code Quality**: (e.g., clang-tidy, cppcheck, pre-commit hooks, custom build targets)
 7. **CI Provider**: (e.g., GitHub Actions, GitLab CI, None)
 8. **Coding Style**: (e.g., Google, LLVM, Mozilla, WebKit, Custom)
 9. **Target Platforms**: (e.g., Desktop vs. Mobile, Windows vs Linux, Android vs macOS).
@@ -62,7 +62,7 @@ If the project already exists, **DO NOT** conduct the full Mode A interview.
 
 **If the user chooses Path 2 (Modernize & Augment):**
 
-3. **Missing Tooling Interview**: Based on the auto-detected conventions, identify missing modern tooling (e.g., code hygiene like `.clang-format` and pre-commit hooks, `.clang-tidy`, testing frameworks, CI/CD, base configs like `.gitignore`). Ask the user which of these missing tools they would like to integrate.
+3. **Missing Tooling Interview**: Based on the auto-detected conventions, identify missing modern tooling (e.g., code hygiene like `.clang-format` and pre-commit hooks, `.clang-tidy`, `cppcheck`, testing frameworks, CI/CD, base configs like `.gitignore`). Ask the user which of these missing tools they would like to integrate.
 4. **Build System Evaluation**: Evaluate the existing build system. Do NOT suggest migrating it to a completely different build system (e.g., do not migrate Makefiles to CMake). Instead, suggest improvements for the existing build system (e.g., modernizing legacy CMake to target-based CMake, or optimizing Makefiles). **If CMake is used, suggest generating a `CMakePresets.json` to standardize build configurations.**
 5. **Layout Refactoring**: You MUST explicitly ask the user if they would like to migrate to the standard Pitchfork directory layout, explaining its benefits for modern C++ projects, unless they are already strictly following it.
 6. **Target Platforms**: Ask the user about support for major target platforms (e.g., Desktop vs. Mobile, Windows vs Linux, Android vs macOS).
