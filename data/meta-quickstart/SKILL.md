@@ -114,7 +114,7 @@ Your plan must include:
 **Workspace Skills Generation (All Modes)**:
 In ALL plans, you must include the creation of customized permanent workspace SKILL files. These must be written directly into the project's workspace using an agent-agnostic directory like `.agents/skills/` or `skills/` so that any AI working in the project immediately knows how to operate it. **CRITICAL**: Do NOT use agent-specific directories like `.gemini` or `.claude`.
 
-**Skill Modification Guidelines**: When upgrading or modifying existing skills, avoid big rewrites of an existing skill file. Do the minimal changes which add the new information and remove the obsolete information.
+**Skill Maintenance & Upgrades**: If the user's project already contains these skills, you MUST inspect them and compare them against the latest versions retrieved from the `mcp://` resources. If the MCP database contains a newer, better, or more comprehensive version, you must update the local skills to reflect these improvements. When upgrading, preserve any project-specific customizations the user may have added, merging the new best practices with the existing context.
 
 The workspace skills to create are:
 
