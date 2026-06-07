@@ -70,14 +70,22 @@ If the project already exists, **DO NOT** conduct the full Mode A interview.
 
 ---
 
-### Step 2: Implementation Plan
+### Step 2: Resource Discovery & Proactive Suggestion
 
-Based on the chosen Mode and the user's answers, create a formal implementation plan.
+Before finalizing any plans, you MUST discover all available skills and proactively suggest relevant ones to the user.
+
+1. **Resource Discovery**: Invoke the `list_resources` tool to retrieve the complete list of available `mcp://scaffold/*` and `mcp://best-practices/*` resources. Do not guess the URIs blindly.
+2. **Gap Analysis**: Compare the user's explicit requests against the available resources.
+3. **Proactive Suggestion**: Identify valuable skills present in the database that the user did NOT explicitly ask for but are relevant to a robust C++ project (e.g., `scaffold-clang-tidy`, `scaffold-cppcheck`, `scaffold-code-hygiene`, `scaffold-github-actions`). Proactively ask the user if they would like to include these recommendations to enhance their project.
+4. Wait for the user's response before proceeding to the Implementation Plan.
+
+### Step 3: Implementation Plan
+
+Based on the chosen Mode, the user's answers, and any accepted proactive suggestions, create a formal implementation plan.
 
 **CRITICAL TOOLING RULE**: For every tool, build system, CI provider, code quality checker, or package manager selected by the user (or universally required, like `base-configs`), you MUST actively attempt to fetch its corresponding `mcp://scaffold/<name>` resource.
 
-- **Resource Discovery**: First, invoke the `list_resources` tool (if available) to discover the exact URIs of all available `mcp://scaffold/*` resources. Do not guess the URIs blindly.
-- **Resource Fetching**: Then, use the `read_resource` tool to fetch the content of the relevant URIs before writing files. If a specific resource exists for a chosen tool, you must follow it strictly. If no specific resource exists, you should still proceed and configure it correctly using your general knowledge.
+- **Resource Fetching**: Use the `read_resource` tool to fetch the content of the relevant URIs before writing files. If a specific resource exists for a chosen tool, you must follow it strictly. If no specific resource exists, you should still proceed and configure it correctly using your general knowledge.
 
 **If you are in Mode A (New Project):**
 Your plan must outline the exact file templates and commands needed to bootstrap the cross-platform C++ project using the chosen stack.
@@ -119,6 +127,6 @@ The workspace skills to create are:
 
 Wait for the user's explicit approval on the implementation plan before proceeding to Execution.
 
-### Step 3: Execution
+### Step 4: Execution
 
 Once the user approves the implementation plan, proceed to directly execute it. Implement the code, initialize git, create the workspace skills, and verify the build as outlined in your plan.
