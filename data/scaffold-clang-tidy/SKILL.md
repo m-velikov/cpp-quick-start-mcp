@@ -53,9 +53,17 @@ When the user specifies Clang-Tidy for Code Quality, the agent MUST generate a `
        value: camelBack
    ```
 
-2. **Build System Integration**: If CMake is used, instruct the agent to enable clang-tidy integration by adding `CXX_CLANG_TIDY` properties to targets, or globally:
+2. **Build System Integration**: If CMake is used, make clang-tidy optional by adding an `ENABLE_CLANG_TIDY` option and falling back to not using it if the command is not found:
    ```cmake
-   set(CMAKE_CXX_CLANG_TIDY "clang-tidy")
+   option(ENABLE_CLANG_TIDY "Enable clang-tidy" ON)
+   if(ENABLE_CLANG_TIDY)
+       find_program(CLANG_TIDY_EXE NAMES "clang-tidy")
+       if(CLANG_TIDY_EXE)
+           set(CMAKE_CXX_CLANG_TIDY "${CLANG_TIDY_EXE}")
+       else()
+           message(STATUS "clang-tidy not found.")
+       endif()
+   endif()
    ```
 
 ## Upgrading Existing Projects (Mode B)
