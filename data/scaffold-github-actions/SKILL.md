@@ -19,10 +19,11 @@ The generated workflow must:
 2. **Strategy Matrix**: Test across multiple OS environments if applicable (e.g., `ubuntu-latest`, `macos-latest`, `windows-latest`).
 3. **Steps**:
    - Check out the repository (`actions/checkout@v4`).
-   - Setup the compiler and dependencies (e.g., install ninja, CMake).
-   - Configure the build using the chosen build system (e.g., `cmake -B build -G Ninja`).
-   - Build the project (e.g., `cmake --build build`).
-   - Run tests (e.g., `ctest --test-dir build --output-on-failure`).
+   - Setup the compiler and dependencies (e.g., install ninja, CMake, Conan/vcpkg if used).
+   - If Conan is the package manager, run `conan install . --build=missing` before configuring (it generates `CMakeUserPresets.json`).
+   - Configure the build using the preset (e.g., `cmake --preset dev`).
+   - Build the project (e.g., `cmake --build --preset dev`).
+   - Run tests (e.g., `ctest --preset dev --output-on-failure`, or `cmake --build --preset dev --target test`).
 
 ## Workflow Integration
 
