@@ -13,13 +13,16 @@ When the user specifies Code Quality Enforcement (like pre-commit hooks, formatt
 
 ### 1. `.clang-format`
 
-Create a file named `.clang-format` with the following exact content:
+Create a file named `.clang-format` using the template below. **Substitute the two placeholder values** from the user's interview answers before writing the file — do not leave them as literals:
+
+- `<CHOSEN_STYLE>` → the coding style chosen in the interview (e.g., `Google`, `LLVM`, `Mozilla`, `WebKit`).
+- `<CXX_STANDARD>` → the C++ standard chosen in the interview, lowercase (e.g., `c++17`, `c++20`, `c++23`).
 
 ```yaml
 # The coding style is ultimately decided by the users.
-# Update the BasedOnStyle or define your custom rules below.
-BasedOnStyle: LLVM
-Standard: c++20
+# Update BasedOnStyle or define custom rules below.
+BasedOnStyle: <CHOSEN_STYLE>
+Standard: <CXX_STANDARD>
 ColumnLimit: 100
 IndentWidth: 4
 TabWidth: 4
