@@ -23,7 +23,7 @@ Define your configuration presets.
   - Generator (default to `"Ninja"` unless requested otherwise).
   - Common cache variables (e.g., `"CMAKE_EXPORT_COMPILE_COMMANDS": "YES"`).
 - **User-Facing Presets**: Create user-facing presets (e.g., `dev` and `release`) that inherit from the base preset.
-  - Set the `"binaryDir"` cleanly (e.g., `"${sourceDir}/build/${presetName}"`).
+  - Set `"binaryDir"` on each user-facing preset (not the hidden base). Use `"${sourceDir}/build/Debug"` / `"${sourceDir}/build/Release"` to stay consistent with the naming convention used by Conan-generated presets.
   - Set `"CMAKE_BUILD_TYPE"` appropriately (Debug for dev, Release for release).
 
 ### 2. Conan Integration (CRITICAL)
@@ -31,6 +31,7 @@ Define your configuration presets.
 If the project uses **Conan 2.x** for dependency management:
 
 - Do NOT hardcode `CMAKE_TOOLCHAIN_FILE` paths manually.
+- Add an `"include": ["CMakeUserPresets.json"]` entry at the top level of `CMakePresets.json`. Conan writes its generated presets (e.g., `conan-debug`, `conan-release`) into `CMakeUserPresets.json`, and this include makes them visible to your own presets. `CMakeUserPresets.json` should be added to `.gitignore` since it is machine-generated.
 - Your user-facing presets (e.g., `dev`) MUST **inherit** from the Conan-generated presets (e.g., `"conan-debug"` or `"conan-release"`).
   ```json
   {
@@ -91,7 +92,6 @@ cmake --build --preset dev
       "name": "default-base",
       "hidden": true,
       "generator": "Ninja",
-      "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
         "CMAKE_EXPORT_COMPILE_COMMANDS": "YES"
       }
@@ -99,8 +99,17 @@ cmake --build --preset dev
     {
       "name": "dev",
       "inherits": "default-base",
+      "binaryDir": "${sourceDir}/build/Debug",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "release",
+      "inherits": "default-base",
+      "binaryDir": "${sourceDir}/build/Release",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
       }
     }
   ],
@@ -108,7 +117,13 @@ cmake --build --preset dev
     {
       "name": "dev",
       "configurePreset": "dev"
+    },
+    {
+      "name": "release",
+      "configurePreset": "release"
     }
   ]
 }
 ```
+
+**Note on `binaryDir` and Conan**: When user-facing presets inherit from Conan-generated presets (e.g., `conan-debug`), Conan already sets `binaryDir` (typically `build/Debug`). Use `build/Debug` / `build/Release` naming in your own presets to stay consistent with this convention. If you inherit from a Conan preset and do NOT need to override the binary dir, omit `binaryDir` from your user-facing preset and let the inherited value apply.
