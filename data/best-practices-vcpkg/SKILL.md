@@ -10,12 +10,11 @@ When integrating vcpkg for dependency management, follow these best practices:
 ## 1. Use Manifest Mode
 
 - Always use `vcpkg.json` (Manifest mode) instead of classic mode to declare dependencies. This ensures that dependencies are version-controlled alongside your code.
-- Avoid running `vcpkg install` manually. Let CMake drive the installation during the configure step via the toolchain file.
+- In manifest mode, CMake automatically triggers vcpkg to install the declared dependencies during the configure step (when the toolchain file is active). You do not need to run `vcpkg install` as a separate step in the normal build workflow.
 
 ## 2. Toolchain Integration
 
-- Ensure CMake uses the vcpkg toolchain file by passing `-DCMAKE_TOOLCHAIN_FILE=[path to vcpkg]/scripts/buildsystems/vcpkg.cmake`.
-- For multi-platform setups, consider wrapping the toolchain configuration in an IDE preset (e.g., `CMakePresets.json`).
+- Ensure CMake uses the vcpkg toolchain file by setting `CMAKE_TOOLCHAIN_FILE` to `$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake` — set this in the `CMakePresets.json` base preset's `cacheVariables` rather than on the command line so all developers and CI runners use the same configuration automatically.
 
 ## 3. Searching and Adding Dependencies
 
