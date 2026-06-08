@@ -109,14 +109,36 @@ Codex uses a TOML file for configuration instead of JSON.
 codex mcp add cpp-quick-start -- cpp-quick-start-mcp
 ```
 
+#### Claude Desktop
+
+Add the server to your Claude Desktop configuration file:
+
+- **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
+- **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
+- **Linux**: `~/.config/Claude/claude_desktop_config.json`
+
+```json
+{
+  "mcpServers": {
+    "cpp-quick-start": {
+      "type": "stdio",
+      "command": "cpp-quick-start-mcp",
+      "args": []
+    }
+  }
+}
+```
+
+Restart Claude Desktop after saving.
+
 #### Claude Code
 
 1. You can add the MCP server directly via the Claude Code CLI using the following command:
    ```bash
-   claude mcp add-json cpp-quick-start '{"type":"stdio","command":"cpp-quick-start-mcp","args":[]}'
+   claude mcp add-json cpp-quick-start '{"type":"stdio","command":"cpp-quick-start-mcp","args":[]}' --scope user
    ```
-2. Or you can manually edit your `claude.json` configuration file and add the JSON block shown in the Antigravity section.
-3. Restart Claude Code or verify active servers with `claude mcp list`.
+2. Or you can manually edit `~/.claude/settings.json` and add the JSON block shown above.
+3. Reload your editor window or verify active servers with `claude mcp list`.
 
 #### GitHub Copilot
 
