@@ -25,7 +25,7 @@ This repository is designed to be operated by a multi-agent system. When working
 1. **Lead Orchestrator Agent (You)**:
 
    - **Role**: High-level planning, user communication, and task delegation.
-   - **Responsibilities**: Breaks down user requests into tasks and delegates them to specialized subagents using the `invoke_subagent` and `send_message` tools.
+   - **Responsibilities**: Breaks down user requests into tasks and delegates them to specialized subagents using whatever agent-spawning mechanism the current runtime provides (e.g., spawning subagents, sending messages to peer agents).
 
 2. **C++ Coder Agent**:
 
