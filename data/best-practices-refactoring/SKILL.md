@@ -9,7 +9,7 @@ When an agent is tasked with refactoring code in this project, it MUST adhere to
 
 ## 1. Prerequisites
 
-- **Ensure a Clean State**: Before making any changes, compile the project and run the entire test suite. Do not begin refactoring if tests are currently failing.
+- **Ensure a Clean State**: Before making any changes, verify the working tree has no uncommitted modifications (`git status`), compile the project, and run the entire test suite. Do not begin refactoring if tests are currently failing or if there are uncommitted changes that could be conflated with the refactoring.
 
 ## 2. Atomic Commits
 
@@ -21,8 +21,13 @@ When an agent is tasked with refactoring code in this project, it MUST adhere to
 - When moving files, strictly adhere to the project's directory layout (e.g., Pitchfork layout).
 - Move header files to the appropriate `include/` directory and source files to `src/`.
 
-## 4. Verification
+## 4. Renaming Symbols
 
-- After moving files or renaming symbols, update all relevant `#include` paths.
+- Prefer semantic rename over text search. Use a clangd-powered IDE refactor (e.g., "Rename Symbol") to update all definition and use sites accurately — this understands scopes and namespaces and avoids false matches in comments or string literals.
+- If a clangd rename is not available, use the compiler as a guide: rename the definition first, then let the build errors enumerate every genuine use site.
+- After renaming, update all `#include` paths that reference moved or renamed headers.
+
+## 5. Verification
+
 - Re-run the build and the test suite after _each_ atomic step to catch regressions immediately.
-- Use `clang-tidy` or similar linters to ensure the new structure doesn't introduce code quality issues.
+- Run `clang-tidy` and `cppcheck` (if configured) after the refactoring is complete to ensure no new code quality issues were introduced.
