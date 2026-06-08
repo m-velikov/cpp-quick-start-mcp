@@ -32,13 +32,16 @@ If Conan is used, the agent MUST instruct that the generated `skills/configure-p
 
 ```bash
 conan profile detect --force
-conan install . --output-folder=build --build=missing
+conan install . --build=missing
 ```
 
-And if CMake is used with Conan, the `configure-project` skill must document how to pass the Conan toolchain to CMake:
+And if CMake is used with Conan, the `configure-project` skill must document the correct ordering — Conan must run first because it generates `CMakeUserPresets.json`, which the CMake preset inherits from:
 
 ```bash
-cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=build/conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release
+# 1. Install dependencies (generates CMakeUserPresets.json with the conan-debug preset)
+conan install . --build=missing
+# 2. Configure via the CMake preset that inherits from conan-debug
+cmake --preset dev
 ```
 
 ## Workflow Integration

@@ -39,10 +39,10 @@ If the project requires pinning dependencies to specific baselines or using cust
 
 ## Configure Skills Generation
 
-If vcpkg is used with CMake, the agent MUST instruct that the generated `skills/configure-project/SKILL.md` inside the new project contains the exact instructions for passing the vcpkg toolchain to CMake. For example:
+If vcpkg is used with CMake, the agent MUST instruct that the generated `skills/configure-project/SKILL.md` inside the new project documents configuration via the CMake preset (the vcpkg toolchain path is already set in `CMakePresets.json` via the `default-base` preset's `CMAKE_TOOLCHAIN_FILE` cache variable — see `scaffold-cmake-presets`). For example:
 
 ```bash
-cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=[path to vcpkg]/scripts/buildsystems/vcpkg.cmake
+cmake --preset dev
 ```
 
 ## Workflow Integration
