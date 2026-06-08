@@ -26,9 +26,9 @@ When the user specifies Makefiles for the Build System, the agent MUST generate 
    OBJ_DIR := obj
    BIN_DIR := bin
    ```
-4. **Source Discovery**: Automatically discover source files or list them explicitly.
+4. **Source Discovery**: Automatically discover source files or list them explicitly. Use `find` rather than `$(wildcard ...)` with `**` — GNU Make does not support `**` globbing, so it would silently expand to nothing.
    ```makefile
-   SRCS := $(wildcard $(SRC_DIR)/**/*.cpp)
+   SRCS := $(shell find $(SRC_DIR) -name '*.cpp')
    OBJS := $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SRCS))
    ```
 5. **Targets**: Create rules for the executable(s) and object files.
