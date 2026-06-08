@@ -32,3 +32,12 @@ endif
 ## 4. Testing
 
 - Register tests using the `test('test_name', executable_target)` command.
+- Run the full test suite with `meson test -C build`. Use `meson test -C build --verbose` to see per-test output.
+
+## 5. Compilation Database
+
+- Meson generates `compile_commands.json` in the build directory automatically — no extra build-system flags are needed.
+
+## 6. Development Environment
+
+- Use `meson devenv -C build` to enter a shell with the correct environment variables (library paths, etc.) set for running built binaries directly without installing them.
