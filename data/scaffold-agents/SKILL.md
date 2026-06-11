@@ -11,12 +11,23 @@ This skill defines how AI agents should coordinate when working on this C++ proj
 
 Embed the following guidelines into an `AGENTS.md` file in the project root so other agents understand the architecture.
 
+**CRITICAL**: After generating the workspace skills, populate the "Workspace Skills" index table in the template below with one row for every skill actually present in `skills/`. Use each skill's frontmatter `description` for the "Use when" column. The two rows shown are examples — replace them with the real set.
+
 ### `AGENTS.md`
 
 ```markdown
 # Agent Configuration and Guidelines
 
 You are an AI assistant operating within a C++ Agentic template repository. Your behavior must adhere to the following directives.
+
+## Workspace Skills (READ FIRST)
+
+This project ships task-specific skills under `skills/`. Before starting ANY task, scan the index below. If the task matches a skill's "Use when" trigger, you MUST read that SKILL.md in full before acting. Do NOT configure, build, test, refactor, or review from memory when a skill covers the task — the skills contain this project's exact commands and conventions; improvising will produce wrong commands and style violations.
+
+| Skill             | Path                              | Use when                                                  |
+| ----------------- | --------------------------------- | --------------------------------------------------------- |
+| configure-project | skills/configure-project/SKILL.md | Fetching/installing dependencies or configuring the build |
+| build-project     | skills/build-project/SKILL.md     | Compiling the project or fixing build errors              |
 
 ## Agent Topology & Roles
 
@@ -62,7 +73,7 @@ Once the project is scaffolded, enforce the following:
 ## Build System & Testing
 
 - Adhere strictly to the project's configured build system and testing framework.
-- Use the local workspace skills (e.g., `build-project` and `test-project`) to compile and test the code.
+- Use the workspace skills from the "Workspace Skills" index above (e.g., `build-project`) to compile and test the code; never invent build or test commands from memory.
 - Do not write custom shell scripts for building unless explicitly instructed to do so by the user's stack configuration.
 - **Out-of-Source Builds**: A build process must not modify the source directory. The source directory can be modified by the user and agents, but not by build scripts. A `build` or similar subdirectory in the source tree is allowed for this purpose. When you identify a directory serving this purpose, check if it is present in `.gitignore` and add it if missing (subject to follow-up user review). If modification to the source directory by build scripts appears unavoidable, ask the user for an exception. Try to limit the affected source files (for example, allow just for a few machine-generated files that are infrequently updated).
 
@@ -71,3 +82,15 @@ Once the project is scaffolded, enforce the following:
 - **NEVER** upload anything on the internet to prevent IP, trade secret, or other leaks.
 - This rule is absolute unless under explicit instructions from the developer, in which case an implementation plan is mandatory.
 ```
+
+## Entry-Point Files for Other Agents
+
+`AGENTS.md` is read natively by some agents (e.g., Codex, Antigravity), but other agents load a differently named instructions file at session start: Claude Code loads `CLAUDE.md` and Gemini CLI loads `GEMINI.md`. So that every agent discovers the same guidelines — most importantly the Workspace Skills index — you MUST also create the following one-line pointer files in the project root, next to `AGENTS.md`:
+
+### `CLAUDE.md` and `GEMINI.md` (identical content)
+
+```markdown
+Read `AGENTS.md` in this directory and follow all directives in it, including the "Workspace Skills (READ FIRST)" index.
+```
+
+Do NOT duplicate any guideline content into these pointer files; `AGENTS.md` must remain the single source of truth. If a pointer file already exists with project-specific content, append the pointer line instead of overwriting the file.
