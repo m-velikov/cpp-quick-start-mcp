@@ -142,7 +142,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           type: "text",
           text: `Available resources:\n${resources
             .map((r) => `- ${r}`)
-            .join("\\n")}`,
+            .join("\n")}`,
         },
       ],
     };
