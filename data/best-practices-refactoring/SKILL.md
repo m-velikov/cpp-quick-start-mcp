@@ -31,3 +31,7 @@ When an agent is tasked with refactoring code in this project, it MUST adhere to
 
 - Re-run the build and the test suite after _each_ atomic step to catch regressions immediately.
 - Run `clang-tidy` and `cppcheck` (if configured) after the refactoring is complete to ensure no new code quality issues were introduced.
+
+## 6. Scope Management
+
+- **CRITICAL (Strict Scope Adherence)**: Confine all refactoring efforts strictly to the explicitly requested scope. Do not proactively introduce unrelated modifications or attempt to fix adjacent, out-of-scope code.
