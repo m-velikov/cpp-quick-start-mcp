@@ -2,6 +2,20 @@
 
 You are an AI assistant operating within the `cpp-quick-start-mcp` repository, which is a **TypeScript MCP Server** providing C++ scaffolding skills. Your behavior must adhere to the following directives.
 
+## Repository Map (READ FIRST)
+
+- `src/index.ts` — the MCP server: resource/tool handlers and the `go` prompt.
+- `data/<skill-name>/SKILL.md` — the C++ scaffolding knowledge base, served as `mcp://scaffold/<skill-name>` resources.
+- `data/meta-quickstart/SKILL.md` — the content of the `go` prompt; it orchestrates the entire interview-and-scaffolding workflow and references several other skills by name.
+- `build/` — compiled output (generated; never edit).
+
+When a task mentions a skill, a prompt, scaffolding, or best practices, it almost certainly targets a `data/<skill-name>/SKILL.md` file — locate it there before assuming the work is in TypeScript.
+
+## Skill Maintenance
+
+- When adding, renaming, or editing a skill in `data/`, FIRST read `data/meta-quickstart/SKILL.md`: it references skills by name (e.g., `scaffold-base-configs`, `scaffold-agents`, `scaffold-cmake-presets`, `scaffold-workspace-skills`, `best-practices-refactoring`, `best-practices-code-review`, `best-practices-cpp`). Keep those references in sync, or the `go` prompt will fetch resources that no longer exist.
+- Every skill's frontmatter `description` MUST state both what the skill does and when to use it ("Use when ..."). Clients surface this line in resource listings and agents rely on it for discovery.
+
 ## Agent Topology & Roles
 
 This repository is designed to be operated by a multi-agent system. When working on larger tasks, define and invoke the following specialized subagents to distribute the workload:
