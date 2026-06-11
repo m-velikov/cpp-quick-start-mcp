@@ -28,7 +28,7 @@ This repository is designed to be operated by a multi-agent system. When working
 
 5. **Tooling & Build Agent**:
    - **Role**: Managing Node.js configurations.
-   - **Responsibilities**: Updates `package.json`, manages `npm` dependencies, configures `tsconfig.json`, and ensures the build outputs safely to the `dist/` directory.
+   - **Responsibilities**: Updates `package.json`, manages `npm` dependencies, configures `tsconfig.json`, and ensures the build outputs safely to the `build/` directory.
 
 ## Code Style & Tooling
 
@@ -43,7 +43,7 @@ This repository is designed to be operated by a multi-agent system. When working
 ## Build System & Testing
 
 - The build system is Node.js/npm. Use `npm install` for dependencies and `npm run build` to compile the TypeScript code.
-- **Out-of-Source Builds**: Compilation output goes to the `dist/` directory. Do not place generated `.js` files in the `src/` directory.
+- **Out-of-Source Builds**: Compilation output goes to the `build/` directory (per `tsconfig.json` `outDir`). Do not place generated `.js` files in the `src/` directory.
 
 ## Security & Privacy
 
