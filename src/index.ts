@@ -14,6 +14,7 @@ import {
   McpError,
 } from "@modelcontextprotocol/sdk/types.js";
 import * as fs from "fs/promises";
+import { readFileSync } from "fs";
 import * as path from "path";
 import { fileURLToPath } from "url";
 import crypto from "crypto";
@@ -21,11 +22,14 @@ import { parseArgs } from "node:util";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DATA_DIR = path.join(__dirname, "..", "data");
+const { version: VERSION } = JSON.parse(
+  readFileSync(path.join(__dirname, "..", "package.json"), "utf-8"),
+);
 
 const server = new Server(
   {
     name: "cpp-quick-start-mcp",
-    version: "1.0.0",
+    version: VERSION,
   },
   {
     capabilities: {
