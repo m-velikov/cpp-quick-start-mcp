@@ -25,6 +25,8 @@ If the directory **CONTAINS AN EXISTING PROJECT**, proceed to **Mode B: Add Comp
 Ask the user to select their preferences for the following categories.
 **CRITICAL**: You MUST use your interactive multiple-choice question tool (e.g., `ask_question`) to present these questions to the user in a strict multiple-choice format. Always ensure the user has a free-form text input option to provide custom answers (write-ins).
 
+**Knowledge-Base-Backed Options**: Before asking the questions, invoke the `list_resources` tool and note which answer options are backed by a dedicated `mcp://scaffold/*` skill. When presenting options, mark the backed ones (e.g., "GTest (recommended — backed by proven templates)"). The user remains free to choose any option, but if they pick an unbacked one, tell them the scaffolding for that choice will rely on general knowledge rather than the knowledge base.
+
 1. **C++ Standard Version**: (e.g., C++11, C++14, C++17, C++20, C++23)
 2. **Build System**: (e.g., CMake, Bazel, Meson, Makefiles)
 3. **Dependency Management**: (e.g., FetchContent, vcpkg, Conan, system packages)
@@ -124,6 +126,11 @@ The workspace skills to create are:
 4. **Refactoring Best Practices**: Create a skill (e.g., `skills/best-practices-refactoring/SKILL.md`) detailing how to safely refactor code within the project's layout and test constraints. **CRITICAL**: You MUST fetch the `mcp://scaffold/best-practices-refactoring` resource and include its contents IN FULL. **Also include the rule**: When creating or renaming a C++ namespace, review the names of the files and directories where members of the namespace are declared/defined; strive for consistency.
 5. **Code Review Best Practices**: Create a skill (e.g., `skills/best-practices-code-review/SKILL.md`) containing guidelines for reviewing code to ensure compliance with the project's chosen formatting, style, and CI requirements. **CRITICAL**: You MUST fetch the `mcp://scaffold/best-practices-code-review` resource and include its contents IN FULL.
 6. **C++ Core Guidelines Best Practices**: Create a skill (e.g., `skills/best-practices-cpp/SKILL.md`) establishing fundamental C++ guidelines based on the [C++ Core Guidelines](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md). **CRITICAL**: You MUST fetch the `mcp://scaffold/best-practices-cpp` resource and include its contents IN FULL.
+
+**Skill Discoverability (All Modes)**:
+
+- Every generated workspace skill MUST start with a frontmatter block containing a `name` and a `description`. The description MUST state both what the skill does and when to use it (e.g., `Use when compiling the project or fixing build errors.`) — agents rely on these descriptions to decide which skills to load.
+- **CRITICAL**: After all workspace skills are created, populate the "Workspace Skills (READ FIRST)" index table in the generated `AGENTS.md` with one row per skill actually present in `skills/`, and create the `CLAUDE.md`/`GEMINI.md` pointer files, both as instructed by the `scaffold-agents` skill.
 
 Wait for the user's explicit approval on the implementation plan before proceeding to Execution.
 
