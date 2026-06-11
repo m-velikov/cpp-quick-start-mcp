@@ -112,7 +112,7 @@ Your plan must include:
 - **CRITICAL**: If CMake is the build system and the user agreed to CMake improvements, you MUST read the `scaffold-cmake-presets` skill and plan to generate a `CMakePresets.json` file.
 
 **Workspace Skills Generation (All Modes)**:
-In ALL plans, you must include the creation of customized permanent workspace SKILL files. These must be written directly into the project's workspace using an agent-agnostic directory like `.agents/skills/` or `skills/` so that any AI working in the project immediately knows how to operate it. **CRITICAL**: Do NOT use agent-specific directories like `.gemini` or `.claude`.
+In ALL plans, you must include the creation of customized permanent workspace SKILL files. These must be written directly into the canonical `skills/` directory at the project root so that any AI working in the project immediately knows how to operate it and so the generated `AGENTS.md` can reference them by a deterministic path. **CRITICAL**: Do NOT use agent-specific directories like `.gemini` or `.claude`, and do NOT invent alternative locations (e.g., `.agents/skills/`). Exception: if the project already keeps workspace skills in a different directory, keep using that existing directory instead of creating a second one.
 
 **Skill Maintenance & Upgrades**: If the user's project already contains these skills, you MUST inspect them and compare them against the latest versions retrieved from the `mcp://` resources. If the MCP database contains a newer, better, or more comprehensive version, you must update the local skills to reflect these improvements. When upgrading, preserve any project-specific customizations the user may have added, merging the new best practices with the existing context.
 
