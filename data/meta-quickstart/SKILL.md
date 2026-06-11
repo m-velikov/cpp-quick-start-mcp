@@ -118,6 +118,8 @@ In ALL plans, you must include the creation of customized permanent workspace SK
 
 **Skill Maintenance & Upgrades**: If the user's project already contains these skills, you MUST inspect them and compare them against the latest versions retrieved from the `mcp://` resources. If the MCP database contains a newer, better, or more comprehensive version, you must update the local skills to reflect these improvements. When upgrading, preserve any project-specific customizations the user may have added, merging the new best practices with the existing context.
 
+**CRITICAL**: Before writing any workspace skill, fetch the `mcp://scaffold/scaffold-workspace-skills` resource and follow its template and structural requirements for every skill you create.
+
 The workspace skills to create are:
 
 1. `skills/configure-project/SKILL.md`: Exact instructions and CLI commands for fetching dependencies, installing them, and configuring the project (e.g., `conan install` or `vcpkg install` followed by `cmake -B build`).
