@@ -40,6 +40,14 @@ const server = new Server(
   },
 );
 
+// Extract the description from a SKILL.md frontmatter block, if present.
+async function readSkillDescription(skillPath: string): Promise<string | undefined> {
+  const content = await fs.readFile(skillPath, "utf-8");
+  const frontmatter = content.match(/^---\n([\s\S]*?)\n---/);
+  const description = frontmatter?.[1]?.match(/^description:\s*(.+)$/m);
+  return description?.[1]?.trim();
+}
+
 // Resources: serve all SKILL.md files inside data/ folders
 server.setRequestHandler(ListResourcesRequestSchema, async () => {
   const dirs = await fs.readdir(DATA_DIR);
@@ -50,12 +58,12 @@ server.setRequestHandler(ListResourcesRequestSchema, async () => {
 
     const skillPath = path.join(DATA_DIR, dir, "SKILL.md");
     try {
-      await fs.access(skillPath);
+      const description = await readSkillDescription(skillPath);
       resources.push({
         uri: `mcp://scaffold/${dir}`,
         name: `C++ Scaffolding Skill: ${dir}`,
         mimeType: "text/markdown",
-        description: `Instructions for scaffolding ${dir}`,
+        description: description ?? `Instructions for scaffolding ${dir}`,
       });
     } catch (e) {
       // Ignore directories without SKILL.md
