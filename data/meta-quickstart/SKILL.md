@@ -74,7 +74,7 @@ If the project already exists, **DO NOT** conduct the full Mode A interview.
 
 Before finalizing any plans, you MUST discover all available skills and proactively suggest relevant ones to the user.
 
-1. **Resource Discovery**: Invoke the `list_resources` tool to retrieve the complete list of available `mcp://scaffold/*` and `mcp://best-practices/*` resources. Do not guess the URIs blindly.
+1. **Resource Discovery**: Invoke the `list_resources` tool to retrieve the complete list of available `mcp://scaffold/*` resources (this includes both `scaffold-*` and `best-practices-*` skills). Do not guess the URIs blindly.
 2. **Gap Analysis**: Compare the user's explicit requests against the available resources.
 3. **Proactive Suggestion**: Identify valuable skills present in the database that the user did NOT explicitly ask for but are relevant to a robust C++ project (e.g., `scaffold-clang-tidy`, `scaffold-cppcheck`, `scaffold-code-hygiene`, `scaffold-github-actions`). Proactively ask the user if they would like to include these recommendations to enhance their project.
 4. Wait for the user's response before proceeding to the Implementation Plan.
