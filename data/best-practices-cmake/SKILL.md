@@ -1,6 +1,6 @@
 ---
 name: best-practices-cmake
-description: Best practices for using Modern CMake in C++ projects.
+description: Best practices for using Modern CMake in C++ projects. Use when writing, modifying, or reviewing CMakeLists.txt files.
 ---
 
 # CMake Best Practices

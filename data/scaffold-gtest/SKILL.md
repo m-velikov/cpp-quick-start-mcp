@@ -1,6 +1,6 @@
 ---
 name: scaffold-gtest
-description: Generates boilerplate for Google Test (GTest) framework integration.
+description: Generates boilerplate for Google Test (GTest) framework integration. Use when GTest was chosen as the testing framework.
 ---
 
 # GTest Scaffolding Skill

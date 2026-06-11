@@ -1,6 +1,6 @@
 ---
 name: go
-description: Interviews the user about their preferred C++ stack and generates the specific project scaffolding skills.
+description: Interviews the user about their preferred C++ stack and generates the project scaffolding. Use when starting a new C++ project or adding components to / modernizing an existing one.
 ---
 
 # Meta-Scaffold Skill

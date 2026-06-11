@@ -1,6 +1,6 @@
 ---
 name: best-practices-cpp
-description: General C++ programming best practices based on the C++ Core Guidelines.
+description: General C++ programming best practices based on the C++ Core Guidelines. Use when writing, modifying, or reviewing any C++ source code.
 ---
 
 # C++ Best Practices (Core Guidelines)

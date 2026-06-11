@@ -1,6 +1,6 @@
 ---
 name: scaffold-bazel
-description: Generates Bazel build files (WORKSPACE/BUILD) for configuring a C++ project.
+description: Generates Bazel build files (WORKSPACE/BUILD) for configuring a C++ project. Use when the chosen build system is Bazel.
 ---
 
 # Bazel Scaffolding Skill

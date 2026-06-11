@@ -1,6 +1,6 @@
 ---
 name: best-practices-vcpkg
-description: Best practices for using vcpkg for dependency management.
+description: Best practices for using vcpkg for dependency management. Use when adding, updating, or troubleshooting vcpkg dependencies or editing vcpkg.json.
 ---
 
 # vcpkg Best Practices

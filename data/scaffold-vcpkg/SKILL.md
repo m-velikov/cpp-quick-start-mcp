@@ -1,6 +1,6 @@
 ---
 name: scaffold-vcpkg
-description: Generates a vcpkg.json manifest for configuring packaging and dependency management with vcpkg.
+description: Generates a vcpkg.json manifest for configuring packaging and dependency management with vcpkg. Use when vcpkg was chosen for dependencies or packaging.
 ---
 
 # vcpkg Packaging Skill

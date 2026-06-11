@@ -1,6 +1,6 @@
 ---
 name: best-practices-refactoring
-description: Best practices for safely refactoring C++ code.
+description: Best practices for safely refactoring C++ code. Use when renaming, moving, or restructuring existing code — read BEFORE editing any file in a refactoring task.
 ---
 
 # Refactoring Best Practices

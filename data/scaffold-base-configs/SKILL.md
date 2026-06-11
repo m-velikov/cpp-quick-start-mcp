@@ -1,6 +1,6 @@
 ---
 name: scaffold-base-configs
-description: Generates essential base repository files like .gitignore and .gitattributes.
+description: Generates essential base repository files like .gitignore, .gitattributes and .clangd. Use when initializing or modernizing any C++ repository.
 ---
 
 # Base Configurations Skill

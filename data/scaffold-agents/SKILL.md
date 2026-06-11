@@ -1,6 +1,6 @@
 ---
 name: scaffold-agents
-description: Instructs the AI on the multi-agent topology to use for complex C++ projects.
+description: Generates the AGENTS.md agent guidelines and entry-point files for a C++ project. Use when setting up or modernizing a project for agentic development.
 ---
 
 # Agent Topology Skill

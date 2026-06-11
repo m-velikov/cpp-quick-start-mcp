@@ -1,6 +1,6 @@
 ---
 name: best-practices-code-review
-description: Best practices for performing automated code reviews.
+description: Best practices for performing automated code reviews. Use when reviewing code changes, diffs, or pull requests in a C++ project.
 ---
 
 # Code Review Best Practices

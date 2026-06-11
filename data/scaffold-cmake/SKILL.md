@@ -1,6 +1,6 @@
 ---
 name: scaffold-cmake
-description: Generates modern CMakeLists.txt files for configuring a C++ project.
+description: Generates modern CMakeLists.txt files for configuring a C++ project. Use when the chosen build system is CMake.
 ---
 
 # CMake Scaffolding Skill

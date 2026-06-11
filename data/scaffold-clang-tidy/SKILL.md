@@ -1,6 +1,6 @@
 ---
 name: scaffold-clang-tidy
-description: Generates .clang-tidy configuration for C++ projects.
+description: Generates .clang-tidy configuration for C++ projects. Use when clang-tidy was chosen for code quality or static analysis.
 ---
 
 # Clang-Tidy Scaffolding Skill

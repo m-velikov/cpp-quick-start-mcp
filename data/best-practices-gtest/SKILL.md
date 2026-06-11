@@ -1,6 +1,6 @@
 ---
 name: best-practices-gtest
-description: Best practices for writing C++ tests with Google Test.
+description: Best practices for writing C++ tests with Google Test. Use when writing or modifying GTest unit or integration tests.
 ---
 
 # Google Test (GTest) Best Practices

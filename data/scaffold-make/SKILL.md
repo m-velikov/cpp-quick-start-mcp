@@ -1,6 +1,6 @@
 ---
 name: scaffold-make
-description: Generates modern Makefiles for configuring a C++ project.
+description: Generates modern Makefiles for configuring a C++ project. Use when the chosen build system is Make.
 ---
 
 # Makefile Scaffolding Skill

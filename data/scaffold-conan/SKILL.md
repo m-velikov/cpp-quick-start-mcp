@@ -1,6 +1,6 @@
 ---
 name: scaffold-conan
-description: Generates a conanfile.py for configuring packaging and dependency management with Conan 2.x.
+description: Generates a conanfile.py for configuring packaging and dependency management with Conan 2.x. Use when Conan was chosen for dependencies or packaging.
 ---
 
 # Conan Packaging Skill

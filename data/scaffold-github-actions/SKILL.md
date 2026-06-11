@@ -1,6 +1,6 @@
 ---
 name: scaffold-github-actions
-description: Generates a standard GitHub Actions CI pipeline for a C++ project.
+description: Generates a standard GitHub Actions CI pipeline for a C++ project. Use when GitHub Actions was chosen as the CI provider.
 ---
 
 # GitHub Actions Scaffolding Skill

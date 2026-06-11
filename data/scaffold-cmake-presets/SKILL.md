@@ -1,6 +1,6 @@
 ---
 name: scaffold-cmake-presets
-description: Generates a CMakePresets.json file to standardize CMake configuration and build commands.
+description: Generates a CMakePresets.json file to standardize CMake configuration and build commands. Use whenever a project builds with CMake.
 ---
 
 # CMake Presets Scaffolding Skill

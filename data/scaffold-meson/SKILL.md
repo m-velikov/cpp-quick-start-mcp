@@ -1,6 +1,6 @@
 ---
 name: scaffold-meson
-description: Generates modular meson.build files for configuring a C++ project.
+description: Generates modular meson.build files for configuring a C++ project. Use when the chosen build system is Meson.
 ---
 
 # Meson Scaffolding Skill

@@ -1,6 +1,6 @@
 ---
 name: scaffold-code-hygiene
-description: Generates code hygiene configurations including .clang-format and pre-commit hooks.
+description: Generates code hygiene configurations including .clang-format and pre-commit hooks. Use when setting up formatting or pre-commit checks.
 ---
 
 # Code Hygiene Skill

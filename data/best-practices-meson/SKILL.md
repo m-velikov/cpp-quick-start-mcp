@@ -1,6 +1,6 @@
 ---
 name: best-practices-meson
-description: Best practices for building C++ projects with Meson.
+description: Best practices for building C++ projects with Meson. Use when writing or modifying meson.build files or debugging Meson builds.
 ---
 
 # Meson Best Practices

@@ -1,6 +1,6 @@
 ---
 name: best-practices-conan
-description: Best practices for using Conan 2.x for dependency management.
+description: Best practices for using Conan 2.x for dependency management. Use when adding, updating, or troubleshooting Conan dependencies or editing conanfile.py.
 ---
 
 # Conan Best Practices

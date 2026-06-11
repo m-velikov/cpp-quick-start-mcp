@@ -1,6 +1,6 @@
 ---
 name: scaffold-cppcheck
-description: Generates cppcheck configuration for C++ projects.
+description: Generates cppcheck configuration for C++ projects. Use when cppcheck was chosen for code quality or static analysis.
 ---
 
 # Cppcheck Scaffolding Skill

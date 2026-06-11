@@ -1,6 +1,6 @@
 ---
 name: scaffold-doctest
-description: Generates boilerplate for Doctest framework integration.
+description: Generates boilerplate for Doctest framework integration. Use when doctest was chosen as the testing framework.
 ---
 
 # Doctest Scaffolding Skill

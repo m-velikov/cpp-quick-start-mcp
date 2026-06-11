@@ -1,6 +1,6 @@
 ---
 name: best-practices-bazel
-description: Best practices for building C++ projects with Bazel.
+description: Best practices for building C++ projects with Bazel. Use when writing or modifying BUILD/WORKSPACE/MODULE.bazel files or debugging Bazel builds.
 ---
 
 # Bazel Best Practices

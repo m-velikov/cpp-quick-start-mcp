@@ -1,6 +1,6 @@
 ---
 name: scaffold-pitchfork-layout
-description: Generates a C++ project directory structure strictly following the Pitchfork Layout specification.
+description: Generates a C++ project directory structure strictly following the Pitchfork Layout specification. Use when creating a project layout or migrating an existing one.
 ---
 
 # Pitchfork Layout Scaffolding Skill

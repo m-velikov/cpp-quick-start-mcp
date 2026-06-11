@@ -1,6 +1,6 @@
 ---
 name: scaffold-gitlab-ci
-description: Generates a standard GitLab CI pipeline for a C++ project.
+description: Generates a standard GitLab CI pipeline for a C++ project. Use when GitLab CI was chosen as the CI provider.
 ---
 
 # GitLab CI Scaffolding Skill
