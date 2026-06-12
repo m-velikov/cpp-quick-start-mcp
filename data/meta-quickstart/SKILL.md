@@ -25,6 +25,8 @@ If the directory **CONTAINS AN EXISTING PROJECT**, proceed to **Mode B: Add Comp
 Ask the user to select their preferences for the following categories.
 **CRITICAL**: You MUST use your interactive multiple-choice question tool (e.g., `ask_question`) to present these questions to the user in a strict multiple-choice format. Always ensure the user has a free-form text input option to provide custom answers (write-ins).
 
+**CRITICAL**: Interactive question tools usually limit how many questions fit in one call (often four). Ask the categories in as many consecutive batches as needed — never drop a category because it did not fit in a batch. All 12 categories below MUST be explicitly asked and answered; none may be skipped, inferred, or filled with defaults.
+
 **Knowledge-Base-Backed Options**: Before asking the questions, invoke the `list_resources` tool and note which answer options are backed by a dedicated `mcp://scaffold/*` skill. When presenting options, mark the backed ones (e.g., "GTest (recommended — backed by proven templates)"). The user remains free to choose any option, but if they pick an unbacked one, tell them the scaffolding for that choice will rely on general knowledge rather than the knowledge base.
 
 1. **C++ Standard Version**: (e.g., C++11, C++14, C++17, C++20, C++23)
@@ -38,12 +40,14 @@ Ask the user to select their preferences for the following categories.
 8. **Coding Style**: (e.g., Google, LLVM, Mozilla, WebKit, Custom)
 9. **Target Platforms**: (e.g., Desktop vs. Mobile, Windows vs Linux, Android vs macOS).
 10. **Directory Layout**: (e.g., Standard Pitchfork [src/, include/, tests/], Flat Layout, or Custom). **CRITICAL**: Suggest Pitchfork directory layout based on the user's answers for Target Platforms.
-11. **Naming Conventions**: Preferred standards for types, values, namespaces, file names, and file extensions (e.g., `.cpp`/`.hpp` vs `.cc`/`.h`).
+11. **Naming Conventions**: Ask explicitly — do NOT skip this question or infer the answer from the Coding Style choice. Cover identifier naming (types, functions/values, namespaces), file naming, and file extensions (`.cpp`/`.hpp` vs `.cc`/`.h`). Offer common presets as choices (e.g., "Standard-library style: everything `snake_case`", "Google style: `PascalCase` types, `snake_case` functions and files") plus a write-in for custom rules.
 12. **Libraries and Tools**: explicitly ask the user: "What libraries or executable tools do you want to build in this project?"
 
 - **CRITICAL**: You must prompt the user repeatedly (e.g., "Are there any other libraries or tools?") until the user explicitly says "no more targets for now".
 
-Wait for the user's responses. Only proceed to **Step 2 (Implementation Plan)** when all 12 questions are answered AND the user indicates they have no more targets to add.
+Wait for the user's responses.
+
+**Interview Completeness Check**: Before proceeding, present the user a summary table with one row per category (1–12) and the answer recorded for it. If ANY category lacks an explicit answer — commonly Naming Conventions or Coding Style when questions were asked in batches — you MUST go back and ask it now; do NOT fill the gap with an assumption or a default. Only proceed to **Step 2 (Resource Discovery & Proactive Suggestion)** when all 12 categories are explicitly answered, the user has confirmed the summary, AND the user indicates they have no more targets to add.
 
 ---
 
@@ -60,7 +64,7 @@ If the project already exists, **DO NOT** conduct the full Mode A interview.
 4. **Target Platforms**: Ask about support for major target platforms (e.g., Desktop vs. Mobile, Windows vs Linux, Android vs macOS).
 5. **Layout Conformity Check**: Evaluate if adding these new components causes the project to violate its inferred directory layout conventions.
    - If it violates conventions or if the target platforms suggest a more robust layout, you MUST explicitly suggest a layout refactoring (e.g., migrating to Pitchfork layout).
-6. Proceed to **Step 2 (Implementation Plan)**.
+6. Proceed to **Step 2 (Resource Discovery & Proactive Suggestion)**.
 
 **If the user chooses Path 2 (Modernize & Augment):**
 
@@ -68,7 +72,7 @@ If the project already exists, **DO NOT** conduct the full Mode A interview.
 4. **Build System Evaluation**: Evaluate the existing build system. Do NOT suggest migrating it to a completely different build system (e.g., do not migrate Makefiles to CMake). Instead, suggest improvements for the existing build system (e.g., modernizing legacy CMake to target-based CMake, or optimizing Makefiles). **If CMake is used, suggest generating a `CMakePresets.json` to standardize build configurations.**
 5. **Layout Refactoring**: You MUST explicitly ask the user if they would like to migrate to the standard Pitchfork directory layout, explaining its benefits for modern C++ projects, unless they are already strictly following it.
 6. **Target Platforms**: Ask the user about support for major target platforms (e.g., Desktop vs. Mobile, Windows vs Linux, Android vs macOS).
-7. Proceed to **Step 2 (Implementation Plan)**.
+7. Proceed to **Step 2 (Resource Discovery & Proactive Suggestion)**.
 
 ---
 
@@ -85,7 +89,7 @@ Before finalizing any plans, you MUST discover all available skills and proactiv
 
 Based on the chosen Mode, the user's answers, and any accepted proactive suggestions, create a formal implementation plan.
 
-**CRITICAL TOOLING RULE**: For every tool, build system, CI provider, code quality checker, or package manager selected by the user (or universally required, like `base-configs`), you MUST actively attempt to fetch its corresponding `mcp://scaffold/<name>` resource.
+**CRITICAL TOOLING RULE**: For every tool, build system, testing framework, CI provider, code quality checker, package manager, or directory layout selected by the user (or universally required, like `base-configs`), you MUST actively attempt to fetch its corresponding `mcp://scaffold/<name>` resource.
 
 - **Resource Fetching**: Use the `read_resource` tool to fetch the content of the relevant URIs before writing files. If a specific resource exists for a chosen tool, you must follow it strictly. If no specific resource exists, you should still proceed and configure it correctly using your general knowledge.
 
@@ -96,12 +100,13 @@ Your plan must outline the exact file templates and commands needed to bootstrap
 - Explicitly plan to run `git init` in the project directory if a Git repository is not already initialized, and to create or rename the initial branch to `main` (e.g. `git branch -M main`).
 - Plan to generate a fresh `README.md` specifically describing the user's new C++ project. This `README.md` MUST include a `## Configure and Build` section containing the exact CLI commands required to configure and build the project based on the user's chosen stack (e.g., `cmake --preset dev` or `conan install . --build=missing`).
 - Plan to read the `scaffold-base-configs` skill and generate the `.gitignore`, `.gitattributes`, and `.clangd` files.
+- **CRITICAL**: You MUST have explicitly asked the user for their Directory Layout (Mode A interview category 10) and suggested the standard Pitchfork layout as the recommended option. When the user chose Pitchfork (or any layout the knowledge base backs), you MUST read the `scaffold-pitchfork-layout` skill and follow it strictly when generating the directory structure.
 - Plan to read the `scaffold-agents` skill from the MCP knowledge base and use it to generate an `AGENTS.md` file in the user's project root.
 - **CRITICAL**: If CMake is the build system, you MUST read the `scaffold-cmake-presets` skill and plan to generate a `CMakePresets.json` file.
 
 **If you are in Mode B (Existing Project - Add Components):**
 Your plan must detail how you will create the new target folders adhering strictly to the inferred layout conventions, and how you will safely _append_ the new targets to the existing build files (do NOT overwrite existing files).
-If a layout refactoring was agreed upon, include that in the plan before adding the new components.
+If a layout refactoring was agreed upon, include that in the plan before adding the new components. **CRITICAL**: When migrating to the Pitchfork layout, you MUST read the `scaffold-pitchfork-layout` skill and follow it strictly.
 
 **If you are in Mode B (Existing Project - Modernize):**
 Your plan must include:
@@ -110,7 +115,7 @@ Your plan must include:
 - Generating an `AGENTS.md` file using the `scaffold-agents` skill.
 - Safely introducing the requested code quality tools (e.g., `.clang-format`, `.clang-tidy`).
 - Applying the agreed-upon build system improvements directly to the existing build files.
-- Implementing any layout refactoring if agreed upon.
+- Implementing any layout refactoring if agreed upon. **CRITICAL**: When a migration to the Pitchfork layout was agreed upon, you MUST read the `scaffold-pitchfork-layout` skill and follow it strictly when restructuring the directories.
 - **CRITICAL**: If CMake is the build system and the user agreed to CMake improvements, you MUST read the `scaffold-cmake-presets` skill and plan to generate a `CMakePresets.json` file.
 
 **Workspace Skills Generation (All Modes)**:
