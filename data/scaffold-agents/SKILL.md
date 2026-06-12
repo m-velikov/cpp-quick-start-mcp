@@ -29,9 +29,18 @@ This project ships task-specific skills under `skills/`. Before starting ANY tas
 | configure-project | skills/configure-project/SKILL.md | Fetching/installing dependencies or configuring the build |
 | build-project     | skills/build-project/SKILL.md     | Compiling the project or fixing build errors              |
 
+## Scope & Resource Discipline
+
+Agent time, tokens, and CI minutes cost the user real money. Do not spend them on work the user did not ask for:
+
+- **Implement EXACTLY what was requested — nothing more.** Do not add unrequested features, tests, refactorings, or "drive-by" fixes to adjacent code, no matter how beneficial they seem.
+- **Suggest, don't do.** If you notice an out-of-scope improvement (a bug, a code smell, missing tooling), mention it in one or two sentences at the end of your reply and let the user decide. Never implement it unsolicited.
+- **Interpret ambiguity narrowly.** When a request can be read as either a small change or a large one, take the narrowest reasonable interpretation, state it explicitly, and ask before expanding.
+- **Match effort to task size.** Spawn subagents, run broad searches, or read large files/resources only when the task genuinely requires it. Small, well-defined tasks must be done directly with a minimal diff.
+
 ## Agent Topology & Roles
 
-This repository is designed to be operated by a multi-agent system. When working on larger tasks, define and invoke the following specialized subagents to distribute the workload:
+This repository is designed to be operated by a multi-agent system. When working on larger tasks, define and invoke the following specialized subagents to distribute the workload. Use this topology ONLY when the task's size justifies the overhead — for small, well-defined tasks, do the work directly without spawning subagents:
 
 1. **Lead Orchestrator Agent (You)**:
 
