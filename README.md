@@ -9,6 +9,7 @@ Instead of writing boilerplate from scratch (and hallucinating build system rule
 ## Features
 
 - **The `go` Prompt**: Initiates an interactive interview with the developer to determine the exact C++ stack (Standard, Build System, Package Manager, CI/CD, Coding Style, etc.).
+- **The `start-cpp-quickstart` Tool**: A tool-based entry point to the same interview-and-scaffolding workflow, for clients that do not surface MCP prompts. The agent calls it on its own when you ask for C++ scaffolding, so the workflow stays reachable even without prompt support.
 - **Dynamic Scaffolding Resources**: Provides the AI with deep, instructional markdown resources (`mcp://scaffold/conan`, `mcp://scaffold/github-actions`, etc.) so it knows exactly how to write the requested boilerplate files perfectly.
 - **Agent-Ready Architecture**: When you run the prompt, your C++ project will be automatically configured for modern agentic development. It seeds your project with built-in guidelines and architecture rules so future AI agents know exactly how to collaborate on your codebase safely and predictably.
 
@@ -195,6 +196,16 @@ Or, using the explicit prompt:
 > `/go upgrade the project`
 
 The AI will read the exact blueprints from the MCP server and cleanly integrate them into your existing codebase (e.g., adding an `AGENTS.md`, setting up GitHub Actions, or integrating a package manager).
+
+### If the `go` Prompt Doesn't Show Up
+
+Some clients do not surface MCP prompts in their UI (or have trouble discovering them). In that case you don't need the `go` prompt at all — just describe your goal in plain language:
+
+> "Start a C++ quickstart for this project"
+
+The agent will discover and invoke the `start-cpp-quickstart` tool, which runs the exact same interview-and-scaffolding workflow. You can also ask for it by name explicitly:
+
+> "Use the start-cpp-quickstart tool"
 
 ## Community
 

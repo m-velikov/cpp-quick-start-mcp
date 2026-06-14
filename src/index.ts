@@ -130,6 +130,16 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
           required: ["uri"],
         },
       },
+      {
+        name: "start-cpp-quickstart",
+        description:
+          "Start the C++ quick-start workflow: interview the user about their preferred C++ stack and generate (or modernize) the project scaffolding. Use when starting a new C++ project, or modernizing, enhancing, or adding components to an existing one. Returns the workflow instructions to follow. This is the tool-based entry point to the same workflow exposed as the 'go' prompt, for hosts that do not surface MCP prompts.",
+        inputSchema: {
+          type: "object",
+          properties: {},
+          required: [],
+        },
+      },
     ],
   };
 });
@@ -191,6 +201,26 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       throw new McpError(
         ErrorCode.InvalidRequest,
         `Resource not found: ${uri}`,
+      );
+    }
+  }
+
+  if (request.params.name === "start-cpp-quickstart") {
+    const metaSkillPath = path.join(DATA_DIR, "meta-quickstart", "SKILL.md");
+    try {
+      const content = await fs.readFile(metaSkillPath, "utf-8");
+      return {
+        content: [
+          {
+            type: "text",
+            text: content,
+          },
+        ],
+      };
+    } catch (error) {
+      throw new McpError(
+        ErrorCode.InternalError,
+        "Failed to load meta-quickstart instructions",
       );
     }
   }
