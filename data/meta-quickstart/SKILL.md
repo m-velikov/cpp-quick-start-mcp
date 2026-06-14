@@ -27,7 +27,7 @@ Ask the user to select their preferences for the following categories.
 
 **CRITICAL**: Interactive question tools usually limit how many questions fit in one call (often four). Ask the categories in as many consecutive batches as needed — never drop a category because it did not fit in a batch. All 12 categories below MUST be explicitly asked and answered; none may be skipped, inferred, or filled with defaults.
 
-**Knowledge-Base-Backed Options**: Before asking the questions, invoke the `list_resources` tool and note which answer options are backed by a dedicated `mcp://scaffold/*` skill. When presenting options, mark the backed ones (e.g., "GTest (recommended — backed by proven templates)"). The user remains free to choose any option, but if they pick an unbacked one, tell them the scaffolding for that choice will rely on general knowledge rather than the knowledge base.
+**Knowledge-Base-Backed Options**: Before asking the questions, invoke the `list-resources` tool and note which answer options are backed by a dedicated `mcp://scaffold/*` skill. When presenting options, mark the backed ones (e.g., "GTest (recommended — backed by proven templates)"). The user remains free to choose any option, but if they pick an unbacked one, tell them the scaffolding for that choice will rely on general knowledge rather than the knowledge base.
 
 1. **C++ Standard Version**: (e.g., C++11, C++14, C++17, C++20, C++23)
 2. **Build System**: (e.g., CMake, Bazel, Meson, Makefiles)
@@ -80,7 +80,7 @@ If the project already exists, **DO NOT** conduct the full Mode A interview.
 
 Before finalizing any plans, you MUST discover all available skills and proactively suggest relevant ones to the user.
 
-1. **Resource Discovery**: Invoke the `list_resources` tool to retrieve the complete list of available `mcp://scaffold/*` resources (this includes both `scaffold-*` and `best-practices-*` skills). Do not guess the URIs blindly.
+1. **Resource Discovery**: Invoke the `list-resources` tool to retrieve the complete list of available `mcp://scaffold/*` resources (this includes both `scaffold-*` and `best-practices-*` skills). Do not guess the URIs blindly.
 2. **Gap Analysis**: Compare the user's explicit requests against the available resources.
 3. **Proactive Suggestion**: Identify valuable skills present in the database that the user did NOT explicitly ask for but are relevant to a robust C++ project (e.g., `scaffold-clang-tidy`, `scaffold-cppcheck`, `scaffold-code-hygiene`, `scaffold-github-actions`). Proactively ask the user if they would like to include these recommendations to enhance their project.
 4. Wait for the user's response before proceeding to the Implementation Plan.
@@ -91,7 +91,7 @@ Based on the chosen Mode, the user's answers, and any accepted proactive suggest
 
 **CRITICAL TOOLING RULE**: For every tool, build system, testing framework, CI provider, code quality checker, package manager, or directory layout selected by the user (or universally required, like `base-configs`), you MUST actively attempt to fetch its corresponding `mcp://scaffold/<name>` resource.
 
-- **Resource Fetching**: Use the `read_resource` tool to fetch the content of the relevant URIs before writing files. If a specific resource exists for a chosen tool, you must follow it strictly. If no specific resource exists, you should still proceed and configure it correctly using your general knowledge.
+- **Resource Fetching**: Use the `read-resource` tool to fetch the content of the relevant URIs before writing files. If a specific resource exists for a chosen tool, you must follow it strictly. If no specific resource exists, you should still proceed and configure it correctly using your general knowledge.
 
 **If you are in Mode A (New Project):**
 Your plan must outline the exact file templates and commands needed to bootstrap the cross-platform C++ project using the chosen stack.
@@ -129,7 +129,7 @@ The workspace skills to create are:
 
 1. `skills/configure-project/SKILL.md`: Exact instructions and CLI commands for fetching dependencies, installing them, and configuring the project (e.g., `conan install` or `vcpkg install` followed by `cmake -B build`).
 2. `skills/build-project/SKILL.md`: Exact instructions and CLI commands for building the project (e.g., `cmake --build build -j`).
-3. **Component Best Practices**: For each of the components and tools used in the project (e.g., CMake, vcpkg, GTest), create a dedicated skill containing best practices and usage instructions tailored to this specific project. **CRITICAL**: Match each component against the URIs returned by `list_resources` (which you already called in Step 2) — look for a `mcp://scaffold/best-practices-*` URI that corresponds to the component. Use `read_resource` to fetch each matching one and include its contents IN FULL (do not summarize or truncate). Only fetch URIs that actually appear in the list — do not guess or construct URIs.
+3. **Component Best Practices**: For each of the components and tools used in the project (e.g., CMake, vcpkg, GTest), create a dedicated skill containing best practices and usage instructions tailored to this specific project. **CRITICAL**: Match each component against the URIs returned by `list-resources` (which you already called in Step 2) — look for a `mcp://scaffold/best-practices-*` URI that corresponds to the component. Use `read-resource` to fetch each matching one and include its contents IN FULL (do not summarize or truncate). Only fetch URIs that actually appear in the list — do not guess or construct URIs.
 4. **Refactoring Best Practices**: Create a skill (e.g., `skills/best-practices-refactoring/SKILL.md`) detailing how to safely refactor code within the project's layout and test constraints. **CRITICAL**: You MUST fetch the `mcp://scaffold/best-practices-refactoring` resource and include its contents IN FULL. **Also include the rule**: When creating or renaming a C++ namespace, review the names of the files and directories where members of the namespace are declared/defined; strive for consistency.
 5. **Code Review Best Practices**: Create a skill (e.g., `skills/best-practices-code-review/SKILL.md`) containing guidelines for reviewing code to ensure compliance with the project's chosen formatting, style, and CI requirements. **CRITICAL**: You MUST fetch the `mcp://scaffold/best-practices-code-review` resource and include its contents IN FULL.
 6. **C++ Core Guidelines Best Practices**: Create a skill (e.g., `skills/best-practices-cpp/SKILL.md`) establishing fundamental C++ guidelines based on the [C++ Core Guidelines](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md). **CRITICAL**: You MUST fetch the `mcp://scaffold/best-practices-cpp` resource and include its contents IN FULL.

@@ -100,14 +100,14 @@ server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
   }
 });
 
-// Tools: explicitly expose list_resources and read_resource
+// Tools: explicitly expose list-resources and read-resource
 server.setRequestHandler(ListToolsRequestSchema, async () => {
   return {
     tools: [
       {
-        name: "list_resources",
+        name: "list-resources",
         description:
-          "List all available C++ scaffolding skills/resources that can be fetched via read_resource.",
+          "List all available C++ scaffolding skills/resources that can be fetched via read-resource.",
         inputSchema: {
           type: "object",
           properties: {},
@@ -115,7 +115,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         },
       },
       {
-        name: "read_resource",
+        name: "read-resource",
         description:
           "Read a specific C++ scaffolding skill/resource by its URI.",
         inputSchema: {
@@ -135,7 +135,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
 });
 
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
-  if (request.params.name === "list_resources") {
+  if (request.params.name === "list-resources") {
     const dirs = await fs.readdir(DATA_DIR);
     const resources = [];
     for (const dir of dirs) {
@@ -160,7 +160,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     };
   }
 
-  if (request.params.name === "read_resource") {
+  if (request.params.name === "read-resource") {
     const uri = request.params.arguments?.uri;
     if (typeof uri !== "string") {
       throw new McpError(
