@@ -116,8 +116,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
       },
       {
         name: "read-resource",
-        description:
-          "Read a specific C++ scaffolding skill/resource by its URI.",
+        description: "Read a specific C++ scaffolding skill/resource by its URI.",
         inputSchema: {
           type: "object",
           properties: {
@@ -162,9 +161,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       content: [
         {
           type: "text",
-          text: `Available resources:\n${resources
-            .map((r) => `- ${r}`)
-            .join("\n")}`,
+          text: `Available resources:\n${resources.map((r) => `- ${r}`).join("\n")}`,
         },
       ],
     };
@@ -173,10 +170,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
   if (request.params.name === "read-resource") {
     const uri = request.params.arguments?.uri;
     if (typeof uri !== "string") {
-      throw new McpError(
-        ErrorCode.InvalidParams,
-        "Invalid or missing 'uri' argument",
-      );
+      throw new McpError(ErrorCode.InvalidParams, "Invalid or missing 'uri' argument");
     }
 
     const match = uri.match(/^mcp:\/\/scaffold\/(.+)$/);
@@ -198,10 +192,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         ],
       };
     } catch (error) {
-      throw new McpError(
-        ErrorCode.InvalidRequest,
-        `Resource not found: ${uri}`,
-      );
+      throw new McpError(ErrorCode.InvalidRequest, `Resource not found: ${uri}`);
     }
   }
 
@@ -218,17 +209,11 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         ],
       };
     } catch (error) {
-      throw new McpError(
-        ErrorCode.InternalError,
-        "Failed to load meta-quickstart instructions",
-      );
+      throw new McpError(ErrorCode.InternalError, "Failed to load meta-quickstart instructions");
     }
   }
 
-  throw new McpError(
-    ErrorCode.MethodNotFound,
-    `Tool not found: ${request.params.name}`,
-  );
+  throw new McpError(ErrorCode.MethodNotFound, `Tool not found: ${request.params.name}`);
 });
 
 // Prompts: expose the meta-quickstart interview
@@ -237,8 +222,7 @@ server.setRequestHandler(ListPromptsRequestSchema, async () => {
     prompts: [
       {
         name: "go",
-        description:
-          "Conducts the C++ quick start interview to determine project stack.",
+        description: "Conducts the C++ quick start interview to determine project stack.",
         arguments: [],
       },
     ],
@@ -247,10 +231,7 @@ server.setRequestHandler(ListPromptsRequestSchema, async () => {
 
 server.setRequestHandler(GetPromptRequestSchema, async (request) => {
   if (request.params.name !== "go") {
-    throw new McpError(
-      ErrorCode.InvalidRequest,
-      `Prompt not found: ${request.params.name}`,
-    );
+    throw new McpError(ErrorCode.InvalidRequest, `Prompt not found: ${request.params.name}`);
   }
 
   const metaSkillPath = path.join(DATA_DIR, "meta-quickstart", "SKILL.md");
@@ -269,10 +250,7 @@ server.setRequestHandler(GetPromptRequestSchema, async (request) => {
       ],
     };
   } catch (error) {
-    throw new McpError(
-      ErrorCode.InternalError,
-      "Failed to load meta-quickstart instructions",
-    );
+    throw new McpError(ErrorCode.InternalError, "Failed to load meta-quickstart instructions");
   }
 });
 
@@ -317,9 +295,7 @@ async function main() {
 
   const HOST = values.host ?? process.env.HOST ?? "127.0.0.1";
 
-  console.log(
-    `Starting C++ Quick Start MCP Server on http://${HOST}:${PORT}/mcp ...`,
-  );
+  console.log(`Starting C++ Quick Start MCP Server on http://${HOST}:${PORT}/mcp ...`);
   serve({
     fetch: app.fetch,
     port: PORT,
