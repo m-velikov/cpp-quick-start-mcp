@@ -35,12 +35,12 @@ conan profile detect --force
 conan install . --build=missing
 ```
 
-And if CMake is used with Conan, the `configure-project` skill must document the correct ordering — Conan must run first because it generates `CMakeUserPresets.json`, which the CMake preset inherits from:
+And if CMake is used with Conan, the `configure-project` skill must document the correct ordering — Conan must run first because it generates the `conan_toolchain.cmake` file that the CMake preset's `toolchainFile` field points at (see `scaffold-cmake-presets`):
 
 ```bash
-# 1. Install dependencies (generates CMakeUserPresets.json with the conan-debug preset)
+# 1. Install dependencies (generates build/<Config>/generators/conan_toolchain.cmake)
 conan install . --build=missing
-# 2. Configure via the CMake preset that inherits from conan-debug
+# 2. Configure via the CMake preset that points at that toolchain file
 cmake --preset dev
 ```
 
